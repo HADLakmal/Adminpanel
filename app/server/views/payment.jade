@@ -194,7 +194,7 @@ html(lang='en')
                     li Enter your details
                     li Get fun
 
-                a.button(href='') Payment
+                a.button(href='')#btn-pay Payment
             .grid-1-5
                 h2 e-Wallets
                 h3
@@ -227,4 +227,12 @@ html(lang='en')
                     li Get 100 coins
                     li Enter your details
                     li Get fun
-                a.button(href='') PAYMENT
+                a.button(href='')
+                    | PAYMENT
+
+block scripts
+    script(src='/vendor/jquery-2.2.3.min.js')
+    script(src='/vendor/jquery.form.min.js')
+    script(src='/vendor/bootstrap.min.js')
+    script(src='/js/views/home.js')
+    script(src='/js/controllers/paymentController.js')

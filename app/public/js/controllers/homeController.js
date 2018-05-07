@@ -1,9 +1,31 @@
 
 function HomeController()
 {
+
+	//credit Card payment
+
 // bind event listeners to button clicks //
 	var that = this;
 
+	$('#btn-payment').click(function(){ that.paymentFunction(); });
+
+	this.paymentFunction = function()
+	{
+		//console.log("print");
+		var that = this;
+		$.ajax({
+			url: "/payment",
+			type: "GET",
+			data : {title:true},
+			success: function(data){
+				//console.log("print");
+				window.location.href = '/payment'
+			},
+			error: function(jqXHR){
+				console.log(jqXHR.responseText+' :: '+jqXHR.statusText);
+			}
+		});
+	}
 // handle user logout //
 	$('#btn-logout').click(function(){ that.attemptLogout(); });
 

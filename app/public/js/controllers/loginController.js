@@ -1,27 +1,7 @@
 
 function LoginController()
 {
-	var that = this;
 
-	$('#btn-payment').click(function(){ that.paymentFunction(); });
-
-	this.paymentFunction = function()
-	{
-		//console.log("print");
-		var that = this;
-		$.ajax({
-			url: "/payment",
-			type: "GET",
-			data : {title:true},
-			success: function(data){
-				//console.log("print");
-				window.location.href = '/payment'
-			},
-			error: function(jqXHR){
-				console.log(jqXHR.responseText+' :: '+jqXHR.statusText);
-			}
-		});
-	}
 
 // bind event listeners to button clicks //
 	$('#retrieve-password-submit').click(function(){ $('#get-credentials-form').submit();});

@@ -43,6 +43,14 @@ module.exports = function(app) {
 		console.log("print");
 		return res.render('payment');
 	});
+
+	//Credit Payment
+
+	app.get('/payment/paymentCredit', function (req, res) {
+		console.log("print");
+		return res.render('credit');
+	});
+
 // logged-in user homepage //
 	
 	app.get('/home', function(req, res) {
