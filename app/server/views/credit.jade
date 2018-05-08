@@ -1,150 +1,11 @@
-doctype html
-html(lang='en')
-    style.
-        body {
-            background-color: #211f23;
-            background-repeat: no-repeat;
-            *zoom: 1;
-            filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FF53455B', endColorstr='#FF201E22');
-            background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjAlIiByPSI3MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM1MzQ1NWIiLz48c3RvcCBvZmZzZXQ9IjcwJSIgc3RvcC1jb2xvcj0iIzIwMWUyMiIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
-            background-size: 100%;
-            background-image: -moz-radial-gradient(top, circle, #53455b 0%, #201e22 70%);
-            background-image: -webkit-radial-gradient(top, circle, #53455b 0%, #201e22 70%);
-            background-image: radial-gradient(circle at top, #53455b 0%, #201e22 70%);
-            color: #fff;
-            font-family: 'Lato', sans-serif;
-            font-size: 100%;
-            min-height: 10%;
-            line-height: 1.5;
-            padding: 2.5em 0;
-        }
-        .container {
-            max-width: 960px;
-        }
-        .border-top { border-top: 1px solid #e5e5e5; }
-        .border-bottom { border-bottom: 1px solid #e5e5e5; }
-        .border-top-gray { border-top-color: #adb5bd; }
-        .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
-        .lh-condensed { line-height: 1.25; }
-    head
-        meta(charset='utf-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-        meta(name='description', content='')
-        meta(name='author', content='')
-        link(rel='icon', href='../../../../favicon.ico')
-        title Checkout example for Bootstrap
-        // Bootstrap core CSS
-        link(href='../../../../dist/css/bootstrap.min.css', rel='stylesheet')
-        // Custom styles for this template
-        link(href='form-validation.css', rel='stylesheet')
-    body.bg-light
-        .container
-            .py-5.text-center
-                img.d-block.mx-auto.mb-4(src='https://getbootstrap.com/assets/brand/bootstrap-solid.svg', alt='', width='72', height='72')
-                h2 Checkout form
-                p.lead
-                    | Below is an example form built entirely with Bootstrap's form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.
-            .row
-                .col-md-4.order-md-2.mb-4
-                    h4.d-flex.justify-content-between.align-items-center.mb-3
-                        span.text-muted Your cart
-                        span.badge.badge-secondary.badge-pill 3
-                    ul.list-group.mb-3
-                        li.list-group-item.d-flex.justify-content-between.lh-condensed
-                            div
-                                h6.my-0 Product name
-                                small.text-muted Brief description
-                            span.text-muted $12
-                        li.list-group-item.d-flex.justify-content-between.lh-condensed
-                            div
-                                h6.my-0 Second product
-                                small.text-muted Brief description
-                            span.text-muted $8
-                        li.list-group-item.d-flex.justify-content-between.lh-condensed
-                            div
-                                h6.my-0 Third item
-                                small.text-muted Brief description
-                            span.text-muted $5
-                        li.list-group-item.d-flex.justify-content-between.bg-light
-                            .text-success
-                                h6.my-0 Promo code
-                                small EXAMPLECODE
-                            span.text-success -$5
-                        li.list-group-item.d-flex.justify-content-between
-                            span Total (USD)
-                            strong $20
-                    form.card.p-2
-                        .input-group
-                            input.form-control(type='text', placeholder='Promo code')
-                            .input-group-append
-                                button.btn.btn-secondary(type='submit') Redeem
-                .col-md-8.order-md-1
-                    h4.mb-3 Billing address
-                    form.needs-validation(novalidate='')
-                        .row
-                            .col-md-6.mb-3
-                                label(for='firstName') First name
-                                input#firstName.form-control(type='text', placeholder='', value='', required='')
-                                .invalid-feedback
-                                    | Valid first name is required.
-                            .col-md-6.mb-3
-                                label(for='lastName') Last name
-                                input#lastName.form-control(type='text', placeholder='', value='', required='')
-                                .invalid-feedback
-                                    | Valid last name is required.
-                        .mb-3
-                            label(for='username') Username
-                            .input-group
-                                .input-group-prepend
-                                    span.input-group-text @
-                                input#username.form-control(type='text', placeholder='Username', required='')
-                                .invalid-feedback(style='width: 100%;')
-                                    | Your username is required.
-                        .mb-3
-                            label(for='email')
-                                | Email
-                                span.text-muted (Optional)
-                            input#email.form-control(type='email', placeholder='you@example.com')
-                            .invalid-feedback
-                                | Please enter a valid email address for shipping updates.
-                        .mb-3
-                            label(for='address') Address
-                            input#address.form-control(type='text', placeholder='1234 Main St', required='')
-                            .invalid-feedback
-                                | Please enter your shipping address.
-                        .mb-3
-                            label(for='address2')
-                                | Address 2
-                                span.text-muted (Optional)
-                            input#address2.form-control(type='text', placeholder='Apartment or suite')
-                        .row
-                            .col-md-5.mb-3
-                                label(for='country') Country
-                                select#country.custom-select.d-block.w-100(required='')
-                                    option(value='') Choose...
-                                    option United States
-                                .invalid-feedback
-                                    | Please select a valid country.
-                            .col-md-4.mb-3
-                                label(for='state') State
-                                select#state.custom-select.d-block.w-100(required='')
-                                    option(value='') Choose...
-                                    option California
-                                .invalid-feedback
-                                    | Please provide a valid state.
-                            .col-md-3.mb-3
-                                label(for='zip') Zip
-                                input#zip.form-control(type='text', placeholder='', required='')
-                                .invalid-feedback
-                                    | Zip code required.
-                        hr.mb-4
-                        .custom-control.custom-checkbox
-                            input#same-address.custom-control-input(type='checkbox')
-                            label.custom-control-label(for='same-address') Shipping address is the same as my billing address
-                        .custom-control.custom-checkbox
-                            input#save-info.custom-control-input(type='checkbox')
-                            label.custom-control-label(for='save-info') Save this information for next time
-                        hr.mb-4
+extends layout
+
+block content
+
+    #login.center-vertical
+        form.well(id='form-payment', method='post')
+            h2 Payment
+            .form-group
                         h4.mb-3 Payment
                         .d-block.my-3
                             .custom-control.custom-radio
@@ -181,15 +42,7 @@ html(lang='en')
                                     | Security code required
                         hr.mb-4
                         button.btn.btn-primary.btn-lg.btn-block(type='submit') Continue to checkout
-            footer.my-5.pt-5.text-muted.text-center.text-small
-                p.mb-1 © 2017-2018 Company Name
-                ul.list-inline
-                    li.list-inline-item
-                        a(href='#') Privacy
-                    li.list-inline-item
-                        a(href='#') Terms
-                    li.list-inline-item
-                        a(href='#') Support
+
         //
           Bootstrap core JavaScript
           ==================================================

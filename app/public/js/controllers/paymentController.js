@@ -9,14 +9,14 @@ function PaymentController(){
 
     this.paymentFunction = function()
     {
-        console.log("print");
+        print("print");
         var that = this;
         $.ajax({
-            url: "/payment/paymentCredit",
+            url: "/paymentCredit",
             type: "GET",
             data : {title:true},
             success: function(data){
-                //console.log("print");
+
                 window.location.href = '/payment/paymentCredit'
             },
             error: function(jqXHR){

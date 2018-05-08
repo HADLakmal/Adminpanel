@@ -40,13 +40,12 @@ module.exports = function(app) {
 
 	//Payement
 	app.get('/payment', function (req, res) {
-		console.log("print");
 		return res.render('payment');
 	});
 
 	//Credit Payment
 
-	app.get('/payment/paymentCredit', function (req, res) {
+	app.get('/paymentCredit', function (req, res) {
 		console.log("print");
 		return res.render('credit');
 	});
