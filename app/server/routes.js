@@ -57,11 +57,41 @@ module.exports = function(app) {
 	// if user is not logged-in redirect back to login page //
 			res.redirect('/');
 		}	else{
-			res.render('home', {
-				title : 'Control Panel',
-				countries : CT,
-				udata : req.session.user
+			AM.findUsers({
+			}, function(e, o){
+				if (e){
+
+					res.status(400).send('error-finding the users');
+				}	else{
+					AM.countUsers({
+					}, function(e, count){
+						if (e){
+
+							res.status(400).send('error-finding the users');
+						}else{
+							AM.countReqUsers({
+							}, function(e, reqCount){
+								if (e){
+
+									res.status(400).send('error-finding the users');
+								}else{
+									res.render('home', {
+										title : 'Control Panel',
+										countries : CT,
+										udata : req.session.user,
+										results : o,
+										count : count,
+										reqCount : reqCount
+									});
+								}
+							});
+
+						}
+					});
+
+				}
 			});
+
 		}
 	});
 	
@@ -85,6 +115,8 @@ module.exports = function(app) {
 						res.cookie('user', o.user, { maxAge: 900000 });
 						res.cookie('pass', o.pass, { maxAge: 900000 });	
 					}
+					//get user details
+
 					res.status(200).send('ok');
 				}
 			});
@@ -109,7 +141,8 @@ module.exports = function(app) {
 			email 	: req.body['email'],
 			user 	: req.body['user'],
 			pass	: req.body['pass'],
-			country : req.body['country']
+			country : req.body['country'],
+			amount : 0
 		}, function(e){
 			if (e){
 				res.status(400).send(e);
@@ -218,4 +251,28 @@ module.exports = function(app) {
 	
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
+
+
+//User Account
+
+	app.post('/userAdd', function(req, res){
+		AM.addNewUser({
+			name 	: req.body['name'],
+			email 	: req.body['email'],
+			amount 	: req.body['amount'],
+			reqAmount	: req.body['reqAmount'],
+			withdraw	: true,
+			date : req.body['date']
+		}, function(e){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				console.log("Added");
+				res.status(200).send('ok');
+			}
+		});
+	});
+
 };
+
+

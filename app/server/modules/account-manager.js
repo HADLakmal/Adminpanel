@@ -32,7 +32,9 @@ db.open(function(e, d){
 	}
 });
 
+
 var accounts = db.collection('accounts');
+
 
 /* login validation methods */
 
@@ -146,7 +148,7 @@ exports.validateResetLink = function(email, passHash, callback)
 
 exports.getAllRecords = function(callback)
 {
-	accounts.find().toArray(
+	users.find().toArray(
 		function(e, res) {
 		if (e) callback(e)
 		else callback(null, res)
@@ -200,6 +202,53 @@ var findById = function(id, callback)
 		if (e) callback(e)
 		else callback(null, res)
 	});
+}
+
+
+var users = db.collection('users');
+
+
+
+exports.addNewUser = function(newData, callback)
+{
+
+			users.findOne({email:newData.email}, function(e, o) {
+				if (o){
+					callback('email-taken');
+				}	else{
+					saltAndHash(newData.pass, function(hash){
+						newData.pass = hash;
+						// append date stamp when record was created //
+						newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+						users.insert(newData, {safe: true}, callback);
+					});
+				}
+			});
+
+}
+exports.findUsers =  function(a,callback)
+{
+	users.find({'withdraw':true}).toArray(
+		function(e, results) {
+			if (e) callback(e)
+			else callback(null,results)
+		});
+}
+exports.countUsers =  function(a,callback)
+{
+	users.count(
+		function(e, results) {
+			if (e) callback(e)
+			else callback(null,results)
+		});
+}
+exports.countReqUsers =  function(a,callback)
+{
+	users.find({'withdraw':true}).count(
+		function(e, results) {
+			if (e) callback(e)
+			else callback(null,results)
+		});
 }
 
 var findByMultipleFields = function(a, callback)
