@@ -75,13 +75,22 @@ module.exports = function(app) {
 
 									res.status(400).send('error-finding the users');
 								}else{
-									res.render('home', {
-										title : 'Control Panel',
-										countries : CT,
-										udata : req.session.user,
-										results : o,
-										count : count,
-										reqCount : reqCount
+									AM.getAccountAmount({
+									}, function(e, amount){
+										if (e){
+
+											res.status(400).send('error-finding the users');
+										}else{
+											res.render('home', {
+												title : 'Control Panel',
+												countries : CT,
+												udata : req.session.user,
+												results : o,
+												count : count,
+												reqCount : reqCount,
+												amount : amount
+											});
+										}
 									});
 								}
 							});
@@ -262,12 +271,36 @@ module.exports = function(app) {
 			amount 	: req.body['amount'],
 			reqAmount	: req.body['reqAmount'],
 			withdraw	: true,
-			date : req.body['date']
+			date : req.body['date'],
+			cardnumber : req.body['card']
 		}, function(e){
 			if (e){
 				res.status(400).send(e);
 			}	else{
 				console.log("Added");
+				res.status(200).send('ok');
+			}
+		});
+	});
+	app.post('/updateAcountAmount', function(req, res){
+		AM.updateAccountAmount({
+			amount 	: req.body['amount'],
+		}, function(e){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				res.status(200).send('ok');
+			}
+		});
+	});
+	app.post('/updateUserAmount', function(req, res){
+		AM.updateUserAmount({
+			email : req.body['email'],
+			amount 	: req.body['amount']
+		}, function(e){
+			if (e){
+				res.status(400).send(e);
+			}	else{
 				res.status(200).send('ok');
 			}
 		});

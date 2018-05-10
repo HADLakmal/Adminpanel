@@ -148,7 +148,7 @@ exports.validateResetLink = function(email, passHash, callback)
 
 exports.getAllRecords = function(callback)
 {
-	users.find().toArray(
+	accounts.find().toArray(
 		function(e, res) {
 		if (e) callback(e)
 		else callback(null, res)
@@ -158,6 +158,33 @@ exports.getAllRecords = function(callback)
 exports.delAllRecords = function(callback)
 {
 	accounts.remove({}, callback); // reset accounts collection for testing //
+}
+exports.getAccountAmount = function (a,callback) {
+	accounts.find({'name':'Admin'}).toArray(
+		function(e, res) {
+			if (e) callback(e)
+			else callback(null, res[0].amount)
+		});
+}
+
+exports.updateAccountAmount = function (a,callback) {
+	var myquery = { name: "Admin" };
+	accounts.findOne(myquery,
+		function(e, res) {
+			if (e) callback(e)
+			else {
+
+				var amount = parseFloat(a.amount)+parseFloat(res.amount);
+				var newvalues = { $set: {amount: amount} };
+				accounts.updateOne(myquery, newvalues, function(e, result) {
+					if (e) callback(e)
+					else {
+						callback(null,result);
+					}
+				});
+			}
+		});
+
 }
 
 /* private encryption & validation methods */
@@ -251,6 +278,31 @@ exports.countReqUsers =  function(a,callback)
 		});
 }
 
+exports.updateUserAmount = function (a,callback) {
+	var myquery = { email: a.email };
+	users.findOne(myquery,
+		function(e, res) {
+			if (e) callback(e)
+			else {
+
+				var amount = parseFloat(a.amount)+parseFloat(res.amount);
+				var newvalues = { $set: {amount: amount} };
+				users.updateOne(myquery, newvalues, function(e, result) {
+					if (e) callback(e)
+					else {
+						callback(null,result);
+					}
+				});
+			}
+		});
+
+}
+
+
+
+
+
+
 var findByMultipleFields = function(a, callback)
 {
 // this takes an array of name/val pairs to search against {fieldName : 'value'} //
@@ -260,3 +312,7 @@ var findByMultipleFields = function(a, callback)
 		else callback(null, results)
 	});
 }
+
+
+
+

@@ -24,7 +24,7 @@ block content
 			.col-md-4
 				form(method="",style="width:80%;height=50%").form-horizontal.well
 					h2 Admin
-					h3 Amount
+					h3 $#{amount}
 		.row(style="margin-top:1%;align-content: center;")
 			form(method="",style="width:95%;").well
 				table(summary='This is a table',style='margin-top:20px;height:100px;text-align: center').h7.scrollit
@@ -44,8 +44,8 @@ block content
 								td= results[i].name
 
 								td= results[i].email
-								td= results[i].amount
-								td= results[i].reqAmount
+								td= results[i].amount+'$'
+								td= results[i].reqAmount+'$'
 								td= results[i].date
 								td
 									button(style = 'width:80px;height:40px;border-radius: 20px;font-size: 15px')#btn-payment.btn-success
