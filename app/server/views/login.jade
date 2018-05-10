@@ -15,17 +15,22 @@ block content
 			.form-group
 				label Password
 				input.form-control(type='password', id='pass-tf', name='pass')
-			.form-group
+			.controls
 				button(type='button').btn.btn-default.button-rememember-me
 					span.glyphicon.glyphicon-unchecked.button-rememember-me-glyph
 					| Remember Me
 				button(type='submit').btn.btn-primary.button-sign-in
 					span.glyphicon.glyphicon-lock
 					| Sign In
+			.clearfix
+			hr
+			.btm-links
+					#forgot-password
+						a(href='#') Forgot Your Password?
+			.clearfix
 
-
-	include modals/alert
-	include modals/lost-password
+			include modals/alert
+			include modals/lost-password
 
 block scripts
 	script(src='/vendor/jquery-2.2.3.min.js')
