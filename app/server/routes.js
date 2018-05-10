@@ -282,7 +282,7 @@ module.exports = function(app) {
 			}
 		});
 	});
-	app.post('/updateAcountAmount', function(req, res){
+	app.post('/updateAccountAmount', function(req, res){
 		AM.updateAccountAmount({
 			amount 	: req.body['amount'],
 		}, function(e){
@@ -297,6 +297,19 @@ module.exports = function(app) {
 		AM.updateUserAmount({
 			email : req.body['email'],
 			amount 	: req.body['amount']
+		}, function(e){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				res.status(200).send('ok');
+			}
+		});
+	});
+
+	app.post('/updateUserWithdraw', function(req, res){
+		AM.updateUserWithdraw({
+			email : req.body['email'],
+			withdraw : req.body['withdraw']
 		}, function(e){
 			if (e){
 				res.status(400).send(e);
