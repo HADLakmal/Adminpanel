@@ -137,6 +137,7 @@ exports.deleteAccount = function(id, callback)
 
 exports.getAccountByEmail = function(email, callback)
 {
+	console.log(email);
 	accounts.findOne({email:email}, function(e, o){ callback(o); });
 }
 
@@ -240,18 +241,11 @@ var users = db.collection('users');
 exports.addNewUser = function(newData, callback)
 {
 	if(newData.email!=null) {
-		users.findOne({email: newData.email}, function (e, o) {
-			if (o) {
-				callback('email-taken');
-			} else {
-				saltAndHash(newData.pass, function (hash) {
-					newData.pass = hash;
-					// append date stamp when record was created //
-					newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-					users.insert(newData, {safe: true}, callback);
-				});
-			}
-		});
+
+		// append date stamp when record was created //
+		newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+		users.insert(newData, {safe: true}, callback);
+
 	}
 	else callback('failed');
 

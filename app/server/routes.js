@@ -272,7 +272,8 @@ module.exports = function(app) {
 			reqAmount	: req.body['reqAmount'],
 			withdraw	: true,
 			date : req.body['date'],
-			cardnumber : req.body['card']
+			cardnumber : req.body['card'],
+			payType : req.body['payType']
 		}, function(e){
 			if (e){
 				res.status(400).send(e);
