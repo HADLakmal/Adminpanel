@@ -7,13 +7,13 @@
 				h2(style='text-align : center') Withdraw
 				label(style='color:#201e22;font-size: 20px;text-align : center')#label
 			.modal-body
-				form(method="post")#get-paypal-form
+				#get-paypal-form
 					.row(style='text-align: center')
-						button(href='https://paytm.com/').btn.btn-primary.button-sign-in
+						a(href='https://paytm.com/').btn.btn-primary.button-sign-in
 							span.glyphicon.glyphicon-play
 							| paytm
 					.row(style='text-align: center;margin-top:20px')
-						button(href='https://www.paypal.com').btn.btn-primary.button-sign-in
+						a(href='https://www.paypal.com').btn.btn-primary.button-sign-in
 							span.glyphicon.glyphicon-play
 							|paypal
 			.modal-footer
