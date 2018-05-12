@@ -36,6 +36,7 @@ block content
 							th(style='width:15%;color:#201e22;font-size: 20px;text-align: center').h7 Amount
 							th(style='width:15%;color:#201e22;font-size: 20px;text-align: center').h7 Request Amount
 							th(style='width:20%;color:#201e22;font-size: 20px;text-align: center').h7 Date
+							th(style='width:20%;color:#201e22;font-size: 20px;text-align: center').h7 Pay_type
 							th(style='width:10%;color:#201e22;font-size: 20px;text-align: center').h7 Action
 					tbody
 						- for (var i = 0; i < results.length; i++)
@@ -47,6 +48,7 @@ block content
 								td= results[i].amount+'$'
 								td= results[i].reqAmount+'$'
 								td= results[i].date
+								td= results[i].payType
 								td
 									#btn-payment
 										a(href='#') Payment

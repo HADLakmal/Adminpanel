@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-    var py = new PaypalValidator();
+    var py = new PaytmValidator();
 // main login form //
 
 

@@ -5,11 +5,22 @@ var EM = require('./modules/email-dispatcher');
 
 var ejs = require('ejs');
 var paypal = require('paypal-rest-sdk');
+var  Paytm = require('paytm-sdk');
+
+var paytm_config = require('./paytm/paytm_config').paytm_config;
+var paytm_checksum = require('./paytm/checksum');
+
 
 paypal.configure({
 	'mode': 'sandbox', //sandbox or live
 	'client_id': 'AYJDBOV9F6ADQkpjLdFUiS-N5HTq3aCph0fi3NMLnwIWX-FS6iVrQy0nbqCpN5twvtUErsXUCg1tvhj6',
 	'client_secret': 'ECd23shcO03CfTo9ztSBtMvgZkd3VmYsNreUK9GTFeC49JAUKbf98Ajnb3mLbZy-JvwlbWC4c2VclNrt'
+});
+
+const paytm = new Paytm('<merchantkey>', {
+    generateRoute: '/checksum/generate',
+    verifyRoute: '/checksum/verify',
+    handleError: false
 });
 
 module.exports = function(app) {
@@ -62,7 +73,6 @@ module.exports = function(app) {
 // logged-in user homepage //
 	
 	app.get('/home', function(req, res) {
-		console.log(req.session.user['user']);
 		if (req.session.user == null){
 	// if user is not logged-in redirect back to login page //
 			res.redirect('/');
@@ -91,7 +101,6 @@ module.exports = function(app) {
 
 											res.status(400).send('error-finding the users');
 										}else{
-											console.log("printtrue");
 											res.render('home', {
 												title : 'Control Panel',
 												countries : CT,
@@ -334,6 +343,7 @@ module.exports = function(app) {
 
 	//Paypal
 	app.post('/paypal',function (req,res) {
+
 		var create_payment_json = {
 			"intent": "sale",
 			"payer": {
@@ -348,14 +358,14 @@ module.exports = function(app) {
 					"items": [{
 						"name": "item",
 						"sku": "item",
-						"price": "1.00",
+						"price": req.body['amountpay'],
 						"currency": "USD",
 						"quantity": 1
 					}]
 				},
 				"amount": {
 					"currency": "USD",
-					"total": req.body['amounttm']+""
+					"total": req.body['amountpay']
 				},
 				"description": "This is the payment description."
 			}]
@@ -374,6 +384,63 @@ module.exports = function(app) {
 			}
 		});
 	});
+
+
+
+
+	app.post('/generate',function (request,response) {
+		console.log(request.body['amounttm']);
+		if(request.body['amounttn']=='') response.redirect('/payment');
+		else {
+			var paramarray = {};
+			paramarray['MID'] = 'LUDOKI60043050694862'; //Provided by Paytm
+			paramarray['ORDER_ID'] = 'ORDER00001'; //unique OrderId for every request
+			paramarray['CUST_ID'] = 'CUST0001';  // unique customer identifier
+			paramarray['INDUSTRY_TYPE_ID'] = 'Retail'; //Provided by Paytm
+			paramarray['CHANNEL_ID'] = 'WAP'; //Provided by Paytm
+			paramarray['TXN_AMOUNT'] = request.body['amounttm']+""; // transaction amount
+			paramarray['WEBSITE'] = 'WEB_STAGING'; //Provided by Paytm
+			paramarray['CALLBACK_URL'] = 'https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp';//Provided by Paytm
+			paramarray['EMAIL'] = 'abc@gmail.com'; // customer email id
+			paramarray['MOBILE_NO'] = '7777777777'; // customer 10 digit mobile no.
+			paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
+				if (err) {
+					console.log(error);
+					res.redirect('/payment');
+				} else {
+					console.log('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
+					response.redirect('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
+				}
+			});
+		}
+	});
+
+	app.post('/verify_checksum',function (req,res) {
+		var fullBody = '';
+		req.on('data', function(chunk) {
+			fullBody += chunk.toString();
+			console.log(fullBody);
+		});
+		req.on('end', function() {
+			var decodedBody = querystring.parse(fullBody);
+			res.writeHead(200, {'Content-type' : 'text/html','Cache-Control': 'no-cache'});
+			if(paytm_checksum.verifychecksum(decodedBody, paytm_config.MERCHANT_KEY)) {
+				console.log("true");
+			}else{
+				console.log("false");
+			}
+			// if checksum is validated Kindly verify the amount and status
+			// if transaction is successful
+			// kindly call Paytm Transaction Status API and verify the transaction amount and status.
+			// If everything is fine then mark that transaction as successful into your DB.
+
+			res.end();
+		});
+	});
+
+
+
+
 
 };
 
