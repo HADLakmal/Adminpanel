@@ -27,7 +27,7 @@ block content
 					h3 $#{amount}
 		.row(style="margin-top:1%;align-content: center;")
 			form(method="",style="width:95%;").well
-				table(summary='This is a table',style='margin-top:20px;height:100px;text-align: center').h7.scrollit
+				table(id="myTable",summary='This is a table',style='margin-top:20px;height:100px;text-align: center').h7.scrollit
 					thead
 						tr
 							th(style='width:3%;color:#201e22;font-size: 20px;text-align: center').h7 #
@@ -50,8 +50,12 @@ block content
 								td= results[i].date
 								td= results[i].payType
 								td
-									#btn-payment
-										a(href='#') Payment
+									a(href="#")
+										| payment
+							//button(id=i+"",value=results[i].name+" "+results[i].email+" transfer "+results[i].reqAmount+'$')
+
+
+
 	include modals/paypal
 
 block scripts
