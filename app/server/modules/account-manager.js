@@ -9,7 +9,7 @@ var moment 		= require('moment');
 	ESTABLISH DATABASE CONNECTION
 */
 
-var dbName = process.env.DB_NAME || 'node-login';
+var dbName = process.env.DB_NAME || 'LUDO';
 var dbHost = process.env.DB_HOST || 'localhost'
 var dbPort = process.env.DB_PORT || 27017;
 
@@ -162,7 +162,7 @@ exports.delAllRecords = function(callback)
 	accounts.remove({}, callback); // reset accounts collection for testing //
 }
 exports.getAccountAmount = function (a,callback) {
-	accounts.find({'name':'Admin'}).toArray(
+	accounts.find({user:a.user}).toArray(
 		function(e, res) {
 			if (e) callback(e)
 			else callback(null, res[0].amount)
@@ -170,7 +170,7 @@ exports.getAccountAmount = function (a,callback) {
 }
 
 exports.updateAccountAmount = function (a,callback) {
-	var myquery = { name: "Admin" };
+	var myquery = { user: a.user };
 	accounts.findOne(myquery,
 		function(e, res) {
 			if (e) callback(e)

@@ -1,0 +1,16 @@
+
+#get-paypal.modal.fade
+	.modal-dialog
+		.modal-content
+			.modal-header
+				button.close(data-dismiss='modal') x
+				h4 Withdraw
+			.modal-body
+				form(method="post")#get-paypal-form.well
+					.form-group
+						label Please enter paypal details
+						input.form-control(type="email", id='email-tf', name="email").required
+						.alert.alert-danger.hide
+			.modal-footer
+					button(data-dismiss="modal")#cancel.btn.btn-default Cancel
+					button(type="submit")#retrieve-paypal-submit.btn.btn-primary Submit

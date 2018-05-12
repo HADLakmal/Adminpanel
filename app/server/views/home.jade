@@ -48,10 +48,9 @@ block content
 								td= results[i].reqAmount+'$'
 								td= results[i].date
 								td
-									button(style = 'width:80px;height:40px;border-radius: 20px;font-size: 15px')#btn-payment.btn-success
-										| Withdraw
-
-		//
+									#btn-payment
+										a(href='#') Payment
+	include modals/paypal
 
 block scripts
 	script(src='/vendor/jquery-2.2.3.min.js')

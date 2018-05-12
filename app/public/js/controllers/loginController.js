@@ -4,6 +4,7 @@ function LoginController()
 
 
 // bind event listeners to button clicks //
+	console.log("loginController");
 	$('#retrieve-password-submit').click(function(){ $('#get-credentials-form').submit();});
 	$('#login #forgot-password').click(function(){
 		$('#cancel').html('Cancel');

@@ -6,7 +6,7 @@ function HomeController()
 
 // bind event listeners to button clicks //
 	var that = this;
-
+	/*
 	$('#btn-payment').click(function(){ that.paymentFunction(); });
 
 	this.paymentFunction = function()
@@ -26,14 +26,16 @@ function HomeController()
 			}
 		});
 	}
+	*/
+
+	$('#btn-payment').click(function(){
+		$('#cancel').html('Cancel');
+		$('#retrieve-paypal-submit').show();
+		$('#get-paypal').modal('show');
+	});
 // handle user logout //
 	$('#btn-logout').click(function(){ that.attemptLogout(); });
 
-// confirm account deletion //
-	$('#account-form-btn1').click(function(){$('.modal-confirm').modal('show')});
-
-// handle account deletion //
-	$('.modal-confirm .submit').click(function(){ that.deleteAccount(); });
 
 	this.deleteAccount = function()
 	{

@@ -13,7 +13,9 @@ var errorHandler = require('errorhandler');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
 
+
 var app = express();
+
 
 app.locals.pretty = true;
 app.set('port', process.env.PORT || 3000);
@@ -29,7 +31,7 @@ app.use(express.static(__dirname + '/app/public'));
 
 var dbHost = process.env.DB_HOST || 'localhost'
 var dbPort = process.env.DB_PORT || 27017;
-var dbName = process.env.DB_NAME || 'node-login';
+var dbName = process.env.DB_NAME || 'LUDO';
 
 var dbURL = 'mongodb://'+dbHost+':'+dbPort+'/'+dbName;
 if (app.get('env') == 'live'){

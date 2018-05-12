@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-
+	console.log("login");
 	var lv = new LoginValidator();
 	var lc = new LoginController();
 

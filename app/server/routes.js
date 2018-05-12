@@ -3,6 +3,15 @@ var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
 
+var ejs = require('ejs');
+var paypal = require('paypal-rest-sdk');
+
+paypal.configure({
+	'mode': 'sandbox', //sandbox or live
+	'client_id': 'AYJDBOV9F6ADQkpjLdFUiS-N5HTq3aCph0fi3NMLnwIWX-FS6iVrQy0nbqCpN5twvtUErsXUCg1tvhj6',
+	'client_secret': 'ECd23shcO03CfTo9ztSBtMvgZkd3VmYsNreUK9GTFeC49JAUKbf98Ajnb3mLbZy-JvwlbWC4c2VclNrt'
+});
+
 module.exports = function(app) {
 
 // main login page //
@@ -53,10 +62,12 @@ module.exports = function(app) {
 // logged-in user homepage //
 	
 	app.get('/home', function(req, res) {
+		console.log(req.session.user['user']);
 		if (req.session.user == null){
 	// if user is not logged-in redirect back to login page //
 			res.redirect('/');
 		}	else{
+
 			AM.findUsers({
 			}, function(e, o){
 				if (e){
@@ -75,12 +86,12 @@ module.exports = function(app) {
 
 									res.status(400).send('error-finding the users');
 								}else{
-									AM.getAccountAmount({
-									}, function(e, amount){
+									AM.getAccountAmount({user : req.session.user['user']}, function(e, amount){
 										if (e){
 
 											res.status(400).send('error-finding the users');
 										}else{
+											console.log("printtrue");
 											res.render('home', {
 												title : 'Control Panel',
 												countries : CT,
@@ -105,6 +116,7 @@ module.exports = function(app) {
 	});
 	
 	app.post('/home', function(req, res){
+		console.log("post");
 		if (req.session.user == null){
 			res.redirect('/');
 		}	else{
@@ -316,6 +328,49 @@ module.exports = function(app) {
 				res.status(400).send(e);
 			}	else{
 				res.status(200).send('ok');
+			}
+		});
+	});
+
+	//Paypal
+	app.post('/paypal',function (req,res) {
+		var create_payment_json = {
+			"intent": "sale",
+			"payer": {
+				"payment_method": "paypal"
+			},
+			"redirect_urls": {
+				"return_url": "http://localhost:3000/payment",
+				"cancel_url": "http://localhost:3000/Un"
+			},
+			"transactions": [{
+				"item_list": {
+					"items": [{
+						"name": "item",
+						"sku": "item",
+						"price": "1.00",
+						"currency": "USD",
+						"quantity": 1
+					}]
+				},
+				"amount": {
+					"currency": "USD",
+					"total": req.body['amounttm']+""
+				},
+				"description": "This is the payment description."
+			}]
+		};
+		paypal.payment.create(create_payment_json, function (error, payment) {
+			if (error) {
+				console.log(error);
+				res.redirect('/payment');
+			} else {
+				console.log(payment);
+				for(var i = 0;i < payment.links.length;i++){
+					if(payment.links[i].rel === 'approval_url'){
+						res.redirect(payment.links[i].href);
+					}
+				}
 			}
 		});
 	});
