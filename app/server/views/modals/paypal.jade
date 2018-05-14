@@ -16,5 +16,9 @@
 						a(href='https://www.paypal.com').btn.btn-primary.button-sign-in
 							span.glyphicon.glyphicon-play
 							|paypal
+					.row(style='text-align: center;margin-top:20px')
+						button(method="post",href="/payment").btn.button-sign-in.btn-danger
+							span.glyphicon.glyphicon-remove
+							| Delete withdraw
 			.modal-footer
 					button(data-dismiss="modal")#cancel.btn.btn-default Cancel

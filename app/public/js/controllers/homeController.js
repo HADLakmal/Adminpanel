@@ -40,10 +40,10 @@ function HomeController()
 
 		var column_num = parseInt( $(this).index() ) + 1;
 		var row_num = parseInt( $(this).parent().index() )+1;
-
-		$("#result").html( "Row_num =" + row_num + "  ,  Rolumn_num ="+ column_num );
+		var MyRows = $('table#myTable').find('tbody').find('tr');
+		var value = $(MyRows[row_num-1]).find('td:eq(2)').html()
 		if(column_num==8){
-			//$('#label').html($(id).val());
+			$('#label').html($(MyRows[row_num-1]).find('td:eq(2)').html());
 			$('#cancel').html('Cancel');
 			$('#retrieve-paypal-submit').show();
 			$('#get-paypal').modal('show');

@@ -373,12 +373,14 @@ module.exports = function(app) {
 		paypal.payment.create(create_payment_json, function (error, payment) {
 			if (error) {
 				console.log(error);
-				res.redirect('/payment');
+				res.status(400).send('fail');
+
 			} else {
 				console.log(payment);
 				for(var i = 0;i < payment.links.length;i++){
 					if(payment.links[i].rel === 'approval_url'){
-						res.redirect(payment.links[i].href);
+						//res.redirect(payment.links[i].href);
+						res.status(200).send(payment.links[i].href);
 					}
 				}
 			}
@@ -390,12 +392,12 @@ module.exports = function(app) {
 
 	app.post('/generate',function (request,response) {
 		console.log(request.body['amounttm']);
-		if(request.body['amounttn']=='') response.redirect('/payment');
+		if(request.body['amounttn']=='') response.status(400).send("fail");
 		else {
 			var paramarray = {};
 			paramarray['MID'] = 'LUDOKI60043050694862'; //Provided by Paytm
-			paramarray['ORDER_ID'] = 'ORDER00001'; //unique OrderId for every request
-			paramarray['CUST_ID'] = 'CUST0001';  // unique customer identifier
+			paramarray['ORDER_ID'] = 'ORDER000'; //unique OrderId for every request
+			paramarray['CUST_ID'] = 'CUST00';  // unique customer identifier
 			paramarray['INDUSTRY_TYPE_ID'] = 'Retail'; //Provided by Paytm
 			paramarray['CHANNEL_ID'] = 'WAP'; //Provided by Paytm
 			paramarray['TXN_AMOUNT'] = request.body['amounttm']+""; // transaction amount
@@ -406,10 +408,10 @@ module.exports = function(app) {
 			paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
 				if (err) {
 					console.log(error);
-					res.redirect('/payment');
+					response.status(400).send("fail");
 				} else {
 					console.log('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
-					response.redirect('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
+					response.status(200).send('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
 				}
 			});
 		}
