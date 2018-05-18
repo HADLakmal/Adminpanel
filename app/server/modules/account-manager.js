@@ -240,16 +240,40 @@ var users = db.collection('users');
 
 exports.addNewUser = function(newData, callback)
 {
-	if(newData.email!=null) {
+    var myquery = {id: newData.id};
+    users.findOne(myquery,
+        function (e, res) {
+            if (e) callback(e)
+            else {
+                console.log(res);
+                if(newData.name!=null&&newData.id!=null&&res==null) {
 
-		// append date stamp when record was created //
-		newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-		users.insert(newData, {safe: true}, callback);
+                    // append date stamp when record was created //
+                    newData.date = moment().format('MMMM Do YYYY');
+                    users.insert(newData, {safe: true}, callback);
 
-	}
-	else callback('failed');
+                }
+                else callback(null);
+            }
+        });
+
 
 }
+
+exports.userLogin = function(a, callback)
+{
+	var myquery = {id: a.id};
+	users.findOne(myquery,
+		function (e, res) {
+			if (e) callback(e)
+			else {
+
+				callback(null,res);
+			}
+		});
+
+}
+
 exports.findUsers =  function(a,callback)
 {
 
@@ -277,8 +301,9 @@ exports.countReqUsers =  function(a,callback)
 }
 
 exports.updateUserAmount = function (a,callback) {
-	if(a.email!=null) {
-		var myquery = {email: a.email};
+    console.log(a);
+	if(a.id!=null) {
+		var myquery = {id: a.id};
 		users.findOne(myquery,
 			function (e, res) {
 				if (e) callback(e)
@@ -299,9 +324,60 @@ exports.updateUserAmount = function (a,callback) {
 
 }
 
+exports.getUserAmount = function (a,callback) {
+    if(a.id!=null) {
+        var myquery = {id: a.id};
+        users.findOne(myquery,
+            function (e, res) {
+                if (e) callback(e)
+                else {
+                    callback(null,res);
+                }
+            });
+    }
+    else callback('failed');
+
+}
+
+exports.getWithdrawalStatus = function (a,callback) {
+    if(a.id!=null) {
+        var myquery = {id: a.id};
+        users.findOne(myquery,
+            function (e, res) {
+                if (e) callback(e)
+                else {
+                    callback(null,res);
+                }
+            });
+    }
+    else callback('failed');
+
+}
+
+exports.withdrawrequest = function (a,callback) {
+    if(a.id!=null) {
+        var myquery = {id: a.id};
+        users.findOne(myquery,
+            function (e, res) {
+                if (e) callback(e)
+                else {
+                    var newvalues = {$set: {type: a.type,reqAmount:a.reqAmount,payType : a.payType,withdraw: true}};
+                    users.updateOne(myquery, newvalues, function (e, result) {
+                        if (e) callback(e)
+                        else {
+                            callback(null, result);
+                        }
+                    });
+                }
+            });
+    }
+    else callback('failed');
+
+}
+
 exports.updateUserWithdraw = function (a,callback) {
-	if(a.email!=null) {
-		var myquery = {email: a.email};
+	if(a.ID!=null) {
+		var myquery = {id: a.id};
 		users.findOne(myquery,
 			function (e, res) {
 				if (e) callback(e)

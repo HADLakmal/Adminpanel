@@ -287,23 +287,38 @@ module.exports = function(app) {
 
 	app.post('/userAdd', function(req, res){
 		AM.addNewUser({
+		    id      : req.body["id"],
 			name 	: req.body['name'],
-			email 	: req.body['email'],
+			type 	: req.body['type'],
 			amount 	: req.body['amount'],
 			reqAmount	: req.body['reqAmount'],
-			withdraw	: true,
+			withdraw	: false,
 			date : req.body['date'],
 			cardnumber : req.body['card'],
 			payType : req.body['payType']
-		}, function(e){
+		}, function(e,response){
 			if (e){
 				res.status(400).send(e);
 			}	else{
-				console.log("Added");
-				res.status(200).send('ok');
+                if(response!=null)
+                    res.status(200).send('ok');
+                else res.status(400).send("failed");
 			}
 		});
 	});
+    app.post('/userLogin', function(req, res){
+        AM.userLogin({
+            id      : req.body["id"]
+        }, function(e,response){
+            if (e){
+                res.status(400).send(e);
+            }	else{
+                if(response!=null)
+                res.status(200).send('ok');
+                else res.status(400).send("failed");
+            }
+        });
+    });
 	app.post('/updateAccountAmount', function(req, res){
 		AM.updateAccountAmount({
 			amount 	: req.body['amount'],
@@ -317,7 +332,7 @@ module.exports = function(app) {
 	});
 	app.post('/updateUserAmount', function(req, res){
 		AM.updateUserAmount({
-			email : req.body['email'],
+			id : req.body['id'],
 			amount 	: req.body['amount']
 		}, function(e){
 			if (e){
@@ -328,9 +343,24 @@ module.exports = function(app) {
 		});
 	});
 
+    app.post('/getUserAmount', function(req, res){
+        AM.getUserAmount({
+            id : req.body['id']
+        }, function(e,response){
+            if (e){
+                res.status(400).send(e);
+            }	else {
+                var amount = response.amount;
+                if (response != null){
+                    res.status(200).send(amount+"");
+                }else res.status(400).send("failed");
+            }
+        });
+    });
+
 	app.post('/updateUserWithdraw', function(req, res){
 		AM.updateUserWithdraw({
-			email : req.body['email'],
+			id : req.body['id'],
 			withdraw : req.body['withdraw']
 		}, function(e){
 			if (e){
@@ -340,6 +370,36 @@ module.exports = function(app) {
 			}
 		});
 	});
+    app.post('/getWithdrawStatus', function(req, res){
+        AM.getWithdrawalStatus({
+            id : req.body['id']
+        }, function(e,response){
+            if (e){
+                res.status(400).send(e);
+            }	else{
+                if(res!=null)
+                res.status(200).send(response.withdraw);
+                else res.status(400).send('failed');
+            }
+        });
+    });
+    app.post('/withdrawRequest', function(req, res){
+        AM.withdrawrequest({
+            id : req.body['id'],
+            type 	: req.body['type'],
+            reqAmount 	: req.body['reqAmount'],
+            payType	: req.body['payType']
+        }, function(e,response){
+            if (e){
+                res.status(400).send(e);
+            }	else{
+                if(response!=null)
+                    res.status(200).send('OK');
+                else
+                    res.status(400).send('failed');
+            }
+        });
+    });
 
 	//Paypal
 	app.post('/paypal',function (req,res) {
@@ -350,8 +410,8 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://localhost:3000/payment",
-				"cancel_url": "http://localhost:3000/Un"
+				"return_url": "http://139.59.6.58:3000/payment",
+				"cancel_url": "http://139.59.6.58:3000/Un"
 			},
 			"transactions": [{
 				"item_list": {
@@ -376,13 +436,22 @@ module.exports = function(app) {
 				res.status(400).send('fail');
 
 			} else {
-				console.log(payment);
-				for(var i = 0;i < payment.links.length;i++){
-					if(payment.links[i].rel === 'approval_url'){
-						//res.redirect(payment.links[i].href);
-						res.status(200).send(payment.links[i].href);
-					}
-				}
+                AM.updateUserAmount({
+                    id : req.body['id'],
+                    amount : req.body['amountpay']
+                }, function(e){
+                    if (e){
+                        res.status(400).send(e);
+                    }	else{
+                        for(var i = 0;i < payment.links.length;i++){
+                            if(payment.links[i].rel === 'approval_url'){
+                                //res.redirect(payment.links[i].href);
+                                res.status(200).send(payment.links[i].href);
+                            }
+                        }
+                    }
+                });
+
 			}
 		});
 	});
@@ -410,8 +479,17 @@ module.exports = function(app) {
 					console.log(error);
 					response.status(400).send("fail");
 				} else {
-					console.log('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
-					response.status(200).send('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
+                    AM.updateUserAmount({
+                        id : req.body['id'],
+                        amount : req.body['amounttn']
+                    }, function(e) {
+                        if (e) {
+                            res.status(400).send(e);
+                        } else {
+
+                            response.status(200).send('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
+                        }
+                    });
 				}
 			});
 		}
