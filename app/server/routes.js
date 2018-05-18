@@ -350,8 +350,9 @@ module.exports = function(app) {
             if (e){
                 res.status(400).send(e);
             }	else {
-                var amount = response.amount;
+
                 if (response != null){
+                    var amount = response.amount;
                     res.status(200).send(amount+"");
                 }else res.status(400).send("failed");
             }
