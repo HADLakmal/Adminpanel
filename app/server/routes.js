@@ -507,11 +507,11 @@ module.exports = function(app) {
 					response.status(400).send("fail");
 				} else {
                     AM.updateUserAmount({
-                        id : req.body['id'],
-                        amount : req.body['amounttn']
+                        id : request.body['id'],
+                        amount : request.body['amounttn']
                     }, function(e) {
                         if (e) {
-                            res.status(400).send(e);
+							response.status(400).send(e);
                         } else {
 
                             response.status(200).send('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
