@@ -4,31 +4,7 @@ extends layout
 
 block content
 
-    .col-md-5
-        #paypal.center-vertical
-            form.well(action='/paypal', method='post',onsubmit='return PaypalValidator()')
-                h2 Ludo Kingdom paypal
-                h6 Please enter the paypal details
-                .form-group
-                    label amount
-                    input.form-control(type='number',min='0', id='am-pay', name='amountpay')
-                .controls.col-lg-offset-4
-
-                    button(type='submit').btn.btn-danger
-                        span.glyphicon.glyphicon-play
-                        | Payment
-    .col-md-offset-7
-        #paytm.center-vertical
-                form.well( method='post',onsubmit='')
-                    h2 Ludo Kingdom paytm
-                    h6 Please enter the paytm details
-                    .form-group
-                        label amount
-                        input.form-control(type='number',min='0', id='am-tm', name='amounttm')
-                    .controls.col-lg-offset-4
-                        button(type='submit',formaction='/generate').btn.btn-danger
-                            span.glyphicon.glyphicon-play
-                            | Payment
+    .h1 #{title}
     include modals/alert
 
 

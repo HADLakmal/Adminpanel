@@ -60,7 +60,32 @@ module.exports = function(app) {
 
 	//Payement
 	app.get('/payment', function (req, res) {
-		return res.render('payment');
+		var payID = req.query.paymentId;
+		var id = req.query.id;
+		paypal.payment.get(payID, function (error, payment) {
+			if (error) {
+				res.status(400).send(error);
+			} else {
+				console.log("Get Payment Response");
+				console.log(payment["transactions"][0].amount.total);
+				AM.updateUserAmount({
+					id : id,
+					payID : payID,
+					amount : payment["transactions"][0].amount.total
+				}, function(e,response){
+					if (e){
+						res.status(400).send(e);
+					}	else{
+						console.log(response);
+						return res.render('payment',{title:response});
+					}
+
+				});
+
+			}
+
+		});
+
 	});
 
 	//Credit Payment
@@ -411,7 +436,7 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://139.59.6.58:3000/payment",
+				"return_url": "http://localhost:3000/payment?id="+req.body['id'],
 				"cancel_url": "http://139.59.6.58:3000/Un"
 			},
 			"transactions": [{
@@ -437,13 +462,14 @@ module.exports = function(app) {
 				res.status(400).send('fail');
 
 			} else {
-                AM.updateUserAmount({
+                AM.updateUserAmountID({
                     id : req.body['id'],
-                    amount : req.body['amountpay']
+                    payID : payment["id"]
                 }, function(e){
                     if (e){
                         res.status(400).send(e);
                     }	else{
+                    	console.log(payment["id"]);
                         for(var i = 0;i < payment.links.length;i++){
                             if(payment.links[i].rel === 'approval_url'){
                                 //res.redirect(payment.links[i].href);

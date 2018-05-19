@@ -303,24 +303,48 @@ exports.countReqUsers =  function(a,callback)
 exports.updateUserAmount = function (a,callback) {
     console.log(a);
 	if(a.id!=null) {
-		var myquery = {id: a.id};
+		var myquery = {id: a.id,payID : a.payID};
 		users.findOne(myquery,
 			function (e, res) {
-				if (e) callback(e)
+				if (e||res==null) callback(null,"failed")
 				else {
 
 					var amount = parseFloat(a.amount) + parseFloat(res.amount);
-					var newvalues = {$set: {amount: amount}};
+					var newvalues = {$set: {amount: amount,payID : Math.random()}};
 					users.updateOne(myquery, newvalues, function (e, result) {
 						if (e) callback(e)
 						else {
-							callback(null, result);
+							callback(null, "success");
 						}
 					});
 				}
 			});
 	}
 	else callback('failed');
+
+}
+
+
+
+exports.updateUserAmountID = function (a,callback) {
+    console.log(a);
+    if(a.id!=null) {
+        var myquery = {id: a.id};
+        users.findOne(myquery,
+            function (e, res) {
+                if (e) callback(e)
+                else {
+                    var newvalues = {$set: {payID: a.payID}};
+                    users.updateOne(myquery, newvalues, function (e, result) {
+                        if (e) callback(e)
+                        else {
+                            callback(null, result);
+                        }
+                    });
+                }
+            });
+    }
+    else callback('failed');
 
 }
 
