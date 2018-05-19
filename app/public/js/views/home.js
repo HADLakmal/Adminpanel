@@ -35,22 +35,22 @@ $(document).ready(function(){
 
 
 
-	$('#get-paypal-form').ajaxForm({
-		url : '',
-		beforeSubmit : function(formData, jqForm, options){
-			if ($('#email-tf').val()==''){
-				return false;
-			}	else{
-				return true;
-			}
-		},
-		success	: function(responseText, status, xhr, $form){
-
-		},
-		error : function(e){
-			console.log("error");
-		}
-
-	});
+	// $('#get-paypal-form').ajaxForm({
+	// 	url : '/updateUserWithdraw',
+	// 	beforeSubmit : function(formData, jqForm, options){
+	// 		if ($('#email-tf').val()==''){
+	// 			return false;
+	// 		}	else{
+	// 			return true;
+	// 		}
+	// 	},
+	// 	success	: function(responseText, status, xhr, $form){
+    //
+	// 	},
+	// 	error : function(e){
+	// 		console.log("error");
+	// 	}
+    //
+	// });
 
 });

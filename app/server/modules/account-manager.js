@@ -400,13 +400,15 @@ exports.withdrawrequest = function (a,callback) {
 }
 
 exports.updateUserWithdraw = function (a,callback) {
-	if(a.ID!=null) {
-		var myquery = {id: a.id};
+	console.log(a);
+	if(a.id!=null) {
+		var myquery = {id: a.id,reqAmount:a.amount};
 		users.findOne(myquery,
 			function (e, res) {
 				if (e) callback(e)
 				else {
-					var newvalues = {$set: {withdraw: a.withdraw}};
+					var amount = parseFloat(res.amount)-parseFloat(a.amount)  ;
+					var newvalues = {$set: {withdraw: a.withdraw,amount:amount,reqAmount:0}};
 					users.updateOne(myquery, newvalues, function (e, result) {
 						if (e) callback(e)
 						else {

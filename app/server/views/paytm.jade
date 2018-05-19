@@ -1,0 +1,26 @@
+extends layout
+
+block content
+        table(align='center')
+            tr
+                td
+                    strong Transaction is being processed,
+            tr
+                td
+                    font(color='blue') Please wait ...
+            tr
+                td
+                    | (Please do not press 'Refresh' or 'Back' button
+        form(name='TESTFORM', action='https://securegw-stage.paytm.in/theia/processTransaction', method='POST')
+            input(type='HIDDEN', name='MID', value=MID)
+            input(type='HIDDEN', name='ORDER_ID', value=ORDER_ID)
+            input(type='HIDDEN', name='CUST_ID', value=CUST_ID)
+            input(type='HIDDEN', name='CURRENCY', value='INR')
+            input(type='HIDDEN', name='WEBSITE', value=WEBSITE)
+            input(type='HIDDEN', name='TXN_AMOUNT', value=TXN_AMOUNT)
+            input(type='HIDDEN', name='CHANNEL_ID', value=CHANNEL_ID)
+            input(type='HIDDEN', name='CALLBACK_URL', value=CALLBACK_URL)
+            input(type='HIDDEN', name='EMAIL', value=EMAIL)
+            input(type='HIDDEN', name='CHECKSUMHASH', value=CHECKSUMHASH)
+        script(type='text/javascript').
+            document.TESTFORM.submit();

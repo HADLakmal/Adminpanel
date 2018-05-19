@@ -150,7 +150,6 @@ module.exports = function(app) {
 	});
 	
 	app.post('/home', function(req, res){
-		console.log("post");
 		if (req.session.user == null){
 			res.redirect('/');
 		}	else{
@@ -385,14 +384,16 @@ module.exports = function(app) {
     });
 
 	app.post('/updateUserWithdraw', function(req, res){
+		console.log(req.body);
 		AM.updateUserWithdraw({
 			id : req.body['id'],
-			withdraw : req.body['withdraw']
+			withdraw : false,
+			amount : req.body['amount']
 		}, function(e){
 			if (e){
 				res.status(400).send(e);
 			}	else{
-				res.status(200).send('ok');
+				res.redirect('/home');
 			}
 		});
 	});
@@ -486,8 +487,8 @@ module.exports = function(app) {
 
 
 
-	app.post('/generate',function (request,response) {
-		console.log(request.body['amounttm']);
+	app.get('/generate',function (request,response) {
+		console.log("dsadas");
 		if(request.body['amounttn']=='') response.status(400).send("fail");
 		else {
 			var paramarray = {};
@@ -495,29 +496,33 @@ module.exports = function(app) {
 			paramarray['ORDER_ID'] = 'ORDER000'; //unique OrderId for every request
 			paramarray['CUST_ID'] = 'CUST00';  // unique customer identifier
 			paramarray['INDUSTRY_TYPE_ID'] = 'Retail'; //Provided by Paytm
-			paramarray['CHANNEL_ID'] = 'WAP'; //Provided by Paytm
+			paramarray['CHANNEL_ID'] = 'WEB'; //Provided by Paytm
 			paramarray['TXN_AMOUNT'] = request.body['amounttm']+""; // transaction amount
 			paramarray['WEBSITE'] = 'WEB_STAGING'; //Provided by Paytm
 			paramarray['CALLBACK_URL'] = 'https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp';//Provided by Paytm
 			paramarray['EMAIL'] = 'abc@gmail.com'; // customer email id
 			paramarray['MOBILE_NO'] = '7777777777'; // customer 10 digit mobile no.
 			paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
-				if (err) {
-					console.log(error);
-					response.status(400).send("fail");
-				} else {
-                    AM.updateUserAmount({
-                        id : request.body['id'],
-                        amount : request.body['amounttn']
-                    }, function(e) {
-                        if (e) {
-							response.status(400).send(e);
-                        } else {
+				console.log(res);
+				response.render('paytm',res);
 
-                            response.status(200).send('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
-                        }
-                    });
-				}
+
+				// if (err) {
+				// 	console.log(error);
+				// 	response.status(400).send("fail");
+				// } else {
+                 //    AM.updateUserAmount({
+                 //        id : request.body['id'],
+                 //        amount : request.body['amounttn']
+                 //    }, function(e) {
+                 //        if (e) {
+				// 			response.status(400).send(e);
+                 //        } else {
+                //
+                 //            response.status(200).send('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
+                 //        }
+                 //    });
+				// }
 			});
 		}
 	});
