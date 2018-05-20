@@ -21,7 +21,10 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#set-password').modal('show');
-	$('#set-password').on('shown', function(){ $('#pass-tf').focus(); })
+	$('#reset-pass').click(function(){
+		$('#set-password').modal('show');
+		$('#set-password').on('shown', function(){ $('#pass-tf').focus(); })
+	});
+
 
 });

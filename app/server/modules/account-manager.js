@@ -309,7 +309,7 @@ exports.updateUserAmount = function (a,callback) {
 				if (e||res==null) callback(null,"failed")
 				else {
 
-					var amount = parseFloat(a.amount) + parseFloat(res.amount);
+					var amount = parseFloat(a.amount).toFixed(2) + parseFloat(res.amount).toFixed(2);
 					var newvalues = {$set: {amount: amount,payID : Math.random()}};
 					users.updateOne(myquery, newvalues, function (e, result) {
 						if (e) callback(e)
@@ -407,7 +407,7 @@ exports.updateUserWithdraw = function (a,callback) {
 			function (e, res) {
 				if (e) callback(e)
 				else {
-					var amount = parseFloat(res.amount)-parseFloat(a.amount)  ;
+					var amount = parseFloat(res.amount).toFixed(2)-parseFloat(a.amount).toFixed(2)  ;
 					var newvalues = {$set: {withdraw: a.withdraw,amount:amount,reqAmount:0}};
 					users.updateOne(myquery, newvalues, function (e, result) {
 						if (e) callback(e)
