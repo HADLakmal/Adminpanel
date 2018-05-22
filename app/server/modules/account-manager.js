@@ -170,7 +170,7 @@ exports.getAccountAmount = function (a,callback) {
 }
 
 exports.updateAccountAmount = function (a,callback) {
-	var myquery = { user: a.user };
+	var myquery = { user: 'admin' };
 	accounts.findOne(myquery,
 		function(e, res) {
 			if (e) callback(e)

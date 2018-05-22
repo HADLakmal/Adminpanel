@@ -43,8 +43,8 @@ function HomeController()
 		var MyRows = $('table#myTable').find('tbody').find('tr');
 		var value = $(MyRows[row_num-1]).find('td:eq(2)').html()
 		if(column_num==9){
-			console.log($(MyRows[row_num-1]).find('td:eq(7)').html())
-			if($(MyRows[row_num-1]).find('td:eq(7)').html()=="paypal"){
+			console.log($(MyRows[row_num-1]).find('td:eq(6)').html())
+			if($(MyRows[row_num-1]).find('td:eq(6)').html()=="paypal"){
 				$('#paypal').show();
 				$('#paytm').hide();
 			}else {
@@ -53,12 +53,12 @@ function HomeController()
 			}
 			$('#label').html($(MyRows[row_num-1]).find('td:eq(3)').html());
 			$('#label_num').html($(MyRows[row_num-1]).find('td:eq(1)').html());
-			$('#label_amount').html($(MyRows[row_num-1]).find('td:eq(5)').html());
+			$('#label_amount').html($(MyRows[row_num-1]).find('td:eq(4)').html());
 			$('#cancel').html('Cancel');
 			$('#retrieve-paypal-submit').show();
 			$('#get-paypal').modal('show');
 			$('#index').val($(MyRows[row_num-1]).find('td:eq(1)').html());
-			$('#reqamount').val($(MyRows[row_num-1]).find('td:eq(5)').html());
+			$('#reqamount').val($(MyRows[row_num-1]).find('td:eq(4)').html());
 		}
 	});
 

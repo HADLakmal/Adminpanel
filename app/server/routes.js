@@ -66,21 +66,29 @@ module.exports = function(app) {
 			if (error) {
 				res.status(400).send(error);
 			} else {
-				console.log("Get Payment Response");
-				console.log(payment["transactions"][0].amount.total);
-				AM.updateUserAmount({
-					id : id,
-					payID : payID,
+				AM.updateAccountAmount({
 					amount : payment["transactions"][0].amount.total
 				}, function(e,response){
 					if (e){
 						res.status(400).send(e);
 					}	else{
-						console.log(response);
-						return res.render('payment',{title:response});
+						AM.updateUserAmount({
+							id : id,
+							payID : payID,
+							amount : payment["transactions"][0].amount.total
+						}, function(e,response){
+							if (e){
+								res.status(400).send(e);
+							}	else{
+								console.log(response);
+								return res.render('payment',{title:response});
+							}
+
+						});
 					}
 
 				});
+
 
 			}
 
@@ -439,7 +447,7 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://139.59.6.58:3000/payment?id="+req.body['id'],
+				"return_url": "http://localhost:3000/payment?id="+req.body['id'],
 				"cancel_url": "http://139.59.6.58:3000/Un"
 			},
 			"transactions": [{
