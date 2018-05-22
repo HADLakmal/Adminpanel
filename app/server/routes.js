@@ -489,12 +489,12 @@ module.exports = function(app) {
 
 
 
-	app.get('/generate',function (request,response) {
+	app.post('/generate',function (request,response) {
 		console.log("dsadas");
 		if(request.body['amounttn']=='') response.status(400).send("fail");
 		else {
 			var paramarray = {};
-			paramarray['MID'] = 'LUDOKI60043050694862'; //Provided by Paytm
+			paramarray['MID'] = 'LUDOSt39944217562677'; //Provided by Paytm
 			paramarray['ORDER_ID'] = 'ORDER000'; //unique OrderId for every request
 			paramarray['CUST_ID'] = 'CUST00';  // unique customer identifier
 			paramarray['INDUSTRY_TYPE_ID'] = 'Retail'; //Provided by Paytm
@@ -506,8 +506,9 @@ module.exports = function(app) {
 			paramarray['MOBILE_NO'] = '7777777777'; // customer 10 digit mobile no.
 			paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
 				console.log(res);
-				response.render('paytm',res);
+				//response.render('paytm',res);
 
+                response.status(200).send('https://securegw-stage.paytm.in/theia/processTransaction?jsondata=' + JSON.stringify(res));
 
 				// if (err) {
 				// 	console.log(error);
