@@ -447,7 +447,7 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://localhost:3000/payment?id="+req.body['id'],
+				"return_url": "http://139.59.6.58:3000/payment?id="+req.body['id'],
 				"cancel_url": "http://139.59.6.58:3000/Un"
 			},
 			"transactions": [{
