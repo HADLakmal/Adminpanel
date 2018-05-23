@@ -42,7 +42,7 @@ function HomeController()
 		var row_num = parseInt( $(this).parent().index() )+1;
 		var MyRows = $('table#myTable').find('tbody').find('tr');
 		var value = $(MyRows[row_num-1]).find('td:eq(2)').html()
-		if(column_num==9){
+		if(column_num==8){
 			console.log($(MyRows[row_num-1]).find('td:eq(6)').html())
 			if($(MyRows[row_num-1]).find('td:eq(6)').html()=="paypal"){
 				$('#paypal').show();
