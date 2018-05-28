@@ -57,16 +57,16 @@ block content
 									form(method='post',action="/freezeRequest")
 										input(id='indexr',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden', value=results[i].id)
 										input(id='reqamountr',style='color:#201e22;font-size: 25px;text-align : center',name='amount',type='hidden',value=results[i].reqAmount)
-										button(type='submit',value='submit').btn.button-sign-in.btn-primary
+										button(type='submit',value='submit' disabled=results[i].freeze).btn.button-sign-in.btn-primary
 											span.glyphicon freeze
-												|#{results[i].freeze}
+
 								td
 									form(method='post',action="/updateUserWithdraw")
 										input(id='index',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden', value=results[i].id)
 										input(id='reqamount',style='color:#201e22;font-size: 20px;text-align : center',name='amount',type='hidden',value=results[i].reqAmount)
 										button(type='submit',value='submit').btn.button-sign-in.btn-danger
 											span.glyphicon
-												| remove
+												| clear
 
 
 
