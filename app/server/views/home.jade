@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	#account-form-container.left-top
+	#account.left-top
 		.row
 			.col-md-offset-12(style="float : left")
 				button#btn-logout.btn-primary(style = 'width:80px;height:40px;border-radius: 20px;font-size: 15px;float:right')
@@ -26,7 +26,7 @@ block content
 					h2 Admin
 					h3 $#{amount}
 		.row(style="margin-top:1%;align-content: center;")
-			form(method="",style="width:95%;").well
+			.well
 				table(id="myTable",summary='This is a table',style='margin-top:20px;height:100px;text-align: center').h7.scrollit
 					thead
 						tr
@@ -53,7 +53,21 @@ block content
 								td
 									a(href="#")
 										| payment
-							//button(id=i+"",value=results[i].name+" "+results[i].email+" transfer "+results[i].reqAmount+'$')
+								td
+									form(method='post',action="/freezeRequest")
+										input(id='indexr',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden', value=results[i].id)
+										input(id='reqamountr',style='color:#201e22;font-size: 25px;text-align : center',name='amount',type='hidden',value=results[i].reqAmount)
+										button(type='submit',value='submit').btn.button-sign-in.btn-primary
+											span.glyphicon freeze
+												|#{results[i].freeze}
+								td
+									form(method='post',action="/updateUserWithdraw")
+										input(id='index',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden', value=results[i].id)
+										input(id='reqamount',style='color:#201e22;font-size: 20px;text-align : center',name='amount',type='hidden',value=results[i].reqAmount)
+										button(type='submit',value='submit').btn.button-sign-in.btn-danger
+											span.glyphicon
+												| remove
+
 
 
 

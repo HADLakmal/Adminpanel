@@ -21,12 +21,6 @@
 							span.glyphicon.glyphicon-play
 							|paypal
 					.row(style='text-align: center;margin-top:20px')
-						form(method='post',action="/updateUserWithdraw")
-							input(id='index',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden')
-							input(id='reqamount',style='color:#201e22;font-size: 20px;text-align : center',name='amount',type='hidden')
 
-							button(type='submit').btn.button-sign-in.btn-danger
-								span.glyphicon.glyphicon-remove
-								| remove
 			.modal-footer
 					button(data-dismiss="modal")#cancel.btn.btn-default Cancel

@@ -407,15 +407,46 @@ exports.updateUserWithdraw = function (a,callback) {
 			function (e, res) {
 				if (e) callback(e)
 				else {
-					var amount = parseFloat(res.amount).toFixed(2)-parseFloat(a.amount).toFixed(2)  ;
-					var newvalues = {$set: {withdraw: a.withdraw,amount:amount,reqAmount:0}};
-					users.updateOne(myquery, newvalues, function (e, result) {
-						if (e) callback(e)
-						else {
-							callback(null, result);
-						}
-					});
+					var amount = parseFloat(res.amount).toFixed(2) - parseFloat(a.amount).toFixed(2);
+					if (amount < 0) {
+						callback('request amount is greater than current amount');
+					}
+					else {
+						var newvalues = {$set: {withdraw: a.withdraw, amount: amount, reqAmount: 0,freeze:false}};
+						users.updateOne(myquery, newvalues, function (e, result) {
+							if (e) callback(e)
+							else {
+								callback(null, result);
+							}
+						});
+					}
 				}
+			});
+	}
+
+	else callback('failed');
+
+}
+
+
+exports.freezeRequest = function (a,callback) {
+	console.log(a);
+	if(a.id!=null) {
+		var myquery = {id: a.id,reqAmount:a.amount};
+		users.findOne(myquery,
+			function (e, res) {
+				if (e) callback(e)
+				else {
+
+						var newvalues = {$set: {freeze:a.freeze}};
+						users.updateOne(myquery, newvalues, function (e, result) {
+							if (e) callback(e)
+							else {
+								callback(null, result);
+							}
+						});
+					}
+
 			});
 	}
 

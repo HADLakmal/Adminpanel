@@ -327,6 +327,7 @@ module.exports = function(app) {
 			amount 	: req.body['amount'],
 			reqAmount	: req.body['reqAmount'],
 			withdraw	: false,
+			freeze : false,
 			date : req.body['date'],
 			cardnumber : req.body['card'],
 			payType : req.body['payType']
@@ -407,6 +408,22 @@ module.exports = function(app) {
 			}
 		});
 	});
+
+	app.post('/freezeRequest', function(req, res){
+
+		AM.freezeRequest({
+			id : req.body['id'],
+			freeze : true,
+			amount : req.body['amount']
+		}, function(e){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				res.redirect('/home');
+			}
+		});
+	});
+
     app.post('/getWithdrawStatus', function(req, res){
         AM.getWithdrawalStatus({
             id : req.body['id']
@@ -415,7 +432,7 @@ module.exports = function(app) {
                 res.status(400).send(e);
             }	else{
                 if(res!=null)
-                res.status(200).send(response.withdraw);
+                res.status(200).send({withdraw : response.withdraw,freeze : response.freeze});
                 else res.status(400).send('failed');
             }
         });
