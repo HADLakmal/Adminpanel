@@ -62,6 +62,15 @@ function HomeController()
 		}
 	});
 
+	var row_num = parseInt( $('#myTable td').parent().index() )+1;
+	var MyRows = $('table#myTable').find('tbody').find('tr');
+	for (i = 0; i < $('#myTable tr').length; i++){
+
+		if($(MyRows[i]).find('td:eq(8)').children().find("input#freezes").val()=="false")
+			$(MyRows[i]).find('td:eq(8)').children().find("button").addClass('btn-primary')
+		else
+			$(MyRows[i]).find('td:eq(8)').children().find("button").addClass('btn-warning')
+	}
 
 	$('#btn').mouseup(function() {
 
@@ -142,4 +151,8 @@ HomeController.prototype.onUpdateSuccess = function()
 	$('.modal-alert .modal-body p').html('Your account has been updated.');
 	$('.modal-alert').modal('show');
 	$('.modal-alert button').off('click');
+}
+
+function freezeMethod() {
+	console.log("dasds");
 }

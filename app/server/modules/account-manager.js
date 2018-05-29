@@ -385,7 +385,7 @@ exports.withdrawrequest = function (a,callback) {
             function (e, res) {
                 if (e) callback(e)
                 else {
-                    var newvalues = {$set: {type: a.type,reqAmount:a.reqAmount,payType : a.payType,withdraw: true,freeze:false}};
+                    var newvalues = {$set: {type: a.type,reqAmount:a.reqAmount,payType : a.payType,withdraw: true,freeze:false,amount:a.amount}};
                     users.updateOne(myquery, newvalues, function (e, result) {
                         if (e) callback(e)
                         else {

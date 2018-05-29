@@ -410,10 +410,13 @@ module.exports = function(app) {
 	});
 
 	app.post('/freezeRequest', function(req, res){
-
+		console.log(req.body['freezes']);
+		var freeze;
+		if(req.body['freezes']=="false") freeze =true;
+		else freeze =false;
 		AM.freezeRequest({
 			id : req.body['id'],
-			freeze : true,
+			freeze : freeze,
 			amount : req.body['amount']
 		}, function(e){
 			if (e){
@@ -442,7 +445,8 @@ module.exports = function(app) {
             id : req.body['id'],
             type 	: req.body['type'],
             reqAmount 	: req.body['reqAmount'],
-            payType	: req.body['payType']
+            payType	: req.body['payType'],
+			amount : req.body['amount']
         }, function(e,response){
             if (e){
                 res.status(400).send(e);

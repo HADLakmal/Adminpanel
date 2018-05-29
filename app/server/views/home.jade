@@ -54,10 +54,11 @@ block content
 									a(href="#")
 										| payment
 								td
-									form(method='post',action="/freezeRequest")
+									form(method='post',action='/freezeRequest',onload="freezeMethod()")
 										input(id='indexr',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden', value=results[i].id)
 										input(id='reqamountr',style='color:#201e22;font-size: 25px;text-align : center',name='amount',type='hidden',value=results[i].reqAmount)
-										button(type='submit',value='submit' disabled=results[i].freeze).btn.button-sign-in.btn-primary
+										input(id='freezes',style='color:#201e22;font-size: 25px;text-align : center',name='freezes',type='hidden',value=results[i].freeze+"")
+										button(type='submit',value=results[i].freeze+"",id ='freeze').btn.button-sign-in.btn-primary
 											span.glyphicon freeze
 
 								td
