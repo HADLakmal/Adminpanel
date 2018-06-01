@@ -26,6 +26,7 @@
     "paypal-pay": "^0.1.1",
     "paypal-rest-sdk": "^1.8.1",
     "paytm-sdk": "0.0.2",
+    "async": "^2.5.0",
     "stylus": "0.52.4"
   },
   "engines": {

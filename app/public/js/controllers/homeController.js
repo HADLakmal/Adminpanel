@@ -42,8 +42,7 @@ function HomeController()
 		var row_num = parseInt( $(this).parent().index() )+1;
 		var MyRows = $('table#myTable').find('tbody').find('tr');
 		var value = $(MyRows[row_num-1]).find('td:eq(2)').html()
-		if(column_num==8){
-			console.log($(MyRows[row_num-1]).find('td:eq(6)').html())
+		if(column_num==9){
 			if($(MyRows[row_num-1]).find('td:eq(6)').html()=="paypal"){
 				$('#paypal').show();
 				$('#paytm').hide();
@@ -51,14 +50,14 @@ function HomeController()
 				$('#paypal').hide();
 				$('#paytm').show();
 			}
-			$('#label').html($(MyRows[row_num-1]).find('td:eq(3)').html());
-			$('#label_num').html($(MyRows[row_num-1]).find('td:eq(1)').html());
-			$('#label_amount').html($(MyRows[row_num-1]).find('td:eq(4)').html());
+            $('#label').html($(MyRows[row_num-1]).find('td:eq(1)').html());
+            $('#label_currency').html($(MyRows[row_num-1]).find('td:eq(4)').html());
+            $('#label_amount').html($(MyRows[row_num-1]).find('td:eq(5)').html());
 			$('#cancel').html('Cancel');
 			$('#retrieve-paypal-submit').show();
 			$('#get-paypal').modal('show');
 			$('#index').val($(MyRows[row_num-1]).find('td:eq(1)').html());
-			$('#reqamount').val($(MyRows[row_num-1]).find('td:eq(4)').html());
+			$('#reqamount').val($(MyRows[row_num-1]).find('td:eq(5)').html());
 		}
 	});
 
@@ -66,10 +65,15 @@ function HomeController()
 	var MyRows = $('table#myTable').find('tbody').find('tr');
 	for (i = 0; i < $('#myTable tr').length; i++){
 
-		if($(MyRows[i]).find('td:eq(8)').children().find("input#freezes").val()=="false")
-			$(MyRows[i]).find('td:eq(8)').children().find("button").addClass('btn-primary')
-		else
-			$(MyRows[i]).find('td:eq(8)').children().find("button").addClass('btn-warning')
+		if($(MyRows[i]).find('td:eq(9)').children().find("input#freezes").val()=="false"){
+			$(MyRows[i]).find('td:eq(9)').children().find("button").addClass('btn-primary');
+			$(MyRows[i]).find('td:eq(9)').children().find("button").html("freeze");
+		}
+
+		else {
+			$(MyRows[i]).find('td:eq(9)').children().find("button").addClass('btn-warning');
+			$(MyRows[i]).find('td:eq(9)').children().find("button").html("unfreeze");
+		}
 	}
 
 	$('#btn').mouseup(function() {
@@ -87,9 +91,10 @@ function HomeController()
 				$('#paypal').hide();
 				$('#paytm').show();
 			}
-			$('#label').html($(MyRows[row_num-1]).find('td:eq(3)').html());
-			$('#label_num').html($(MyRows[row_num-1]).find('td:eq(1)').html());
+			$('#label').html($(MyRows[row_num-1]).find('td:eq(1)').html());
+			$('#label_currency').html($(MyRows[row_num-1]).find('td:eq(3)').html());
 			$('#label_amount').html($(MyRows[row_num-1]).find('td:eq(4)').html());
+
 			$('#cancel').html('Cancel');
 			$('#retrieve-paypal-submit').show();
 			$('#get-paypal').modal('show');

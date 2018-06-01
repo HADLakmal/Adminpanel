@@ -397,9 +397,9 @@ module.exports = function(app) {
 	app.post('/updateUserWithdraw', function(req, res){
 		console.log(req.body);
 		AM.updateUserWithdraw({
-			id : req.body['id'],
+			id : req.body['ids'],
 			withdraw : false,
-			amount : req.body['amount']
+			reqamount : req.body['reqamount']
 		}, function(e){
 			if (e){
 				res.status(400).send(e);
@@ -410,7 +410,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/freezeRequest', function(req, res){
-		console.log(req.body['freezes']);
+		console.log(req);
 		var freeze;
 		if(req.body['freezes']=="false") freeze =true;
 		else freeze =false;
@@ -446,7 +446,8 @@ module.exports = function(app) {
             type 	: req.body['type'],
             reqAmount 	: req.body['reqAmount'],
             payType	: req.body['payType'],
-			amount : req.body['amount']
+			amount : req.body['amount'],
+            currency : req.body['currency']
         }, function(e,response){
             if (e){
                 res.status(400).send(e);
@@ -468,8 +469,8 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://139.59.6.58:3000/payment?id="+req.body['id'],
-				"cancel_url": "http://139.59.6.58:3000/Un"
+				"return_url": "http://localhost:3000/payment?id="+req.body['id'],
+				"cancel_url": "http://localhost:3000/Un"
 			},
 			"transactions": [{
 				"item_list": {
@@ -477,12 +478,12 @@ module.exports = function(app) {
 						"name": "item",
 						"sku": "item",
 						"price": req.body['amountpay'],
-						"currency": "USD",
+						"currency": req.body["currency"],
 						"quantity": 1
 					}]
 				},
 				"amount": {
-					"currency": "USD",
+					"currency": req.body["currency"],
 					"total": req.body['amountpay']
 				},
 				"description": "This is the payment description."

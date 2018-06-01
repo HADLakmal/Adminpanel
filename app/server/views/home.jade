@@ -31,10 +31,11 @@ block content
 					thead
 						tr
 							th(style='width:3%;color:#201e22;font-size: 20px;text-align: center').h7 #
-							th(style='width:12%;color:#201e22;font-size: 20px;text-align: center').h7 User ID
 							th(style='width:12%;color:#201e22;font-size: 20px;text-align: center').h7 User Name
+							th(style='width:15%;color:#201e22;font-size: 20px;text-align: center').h7 Budget
 							th(style='width:20%;color:#201e22;font-size: 20px;text-align: center').h7 Request_type
-							th(style='width:15%;color:#201e22;font-size: 20px;text-align: center').h7 Request Amount($)
+							th(style='width:12%;color:#201e22;font-size: 20px;text-align: center').h7 Curency
+							th(style='width:15%;color:#201e22;font-size: 20px;text-align: center').h7 Request Amount
 							th(style='width:18%;color:#201e22;font-size: 20px;text-align: center').h7 Date
 							th(style='width:13%;color:#201e22;font-size: 20px;text-align: center').h7 Pay_type
 							th(style='width:15%;color:#201e22;font-size: 20px;text-align: center').h7 Action
@@ -42,9 +43,10 @@ block content
 						- for (var i = 0; i < results.length; i++)
 							tr(style='width:5%;color:#201e22;font-size: 20px')
 								td= i + 1
-								td= results[i].id
 								td= results[i].name
+								td= results[i].amount
 								td= results[i].type
+								td= results[i].currency
 									//td= results[i].amount
 								td= results[i].reqAmount
 								td= results[i].date
@@ -54,7 +56,7 @@ block content
 									a(href="#")
 										| payment
 								td
-									form(method='post',action='/freezeRequest',onload="freezeMethod()")
+									form(method='post',action='/freezeRequest', style="margin-left:5px")
 										input(id='indexr',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden', value=results[i].id)
 										input(id='reqamountr',style='color:#201e22;font-size: 25px;text-align : center',name='amount',type='hidden',value=results[i].reqAmount)
 										input(id='freezes',style='color:#201e22;font-size: 25px;text-align : center',name='freezes',type='hidden',value=results[i].freeze+"")
@@ -63,8 +65,8 @@ block content
 
 								td
 									form(method='post',action="/updateUserWithdraw")
-										input(id='index',style='color:#201e22;font-size: 20px;text-align : center',name='id',type='hidden', value=results[i].id)
-										input(id='reqamount',style='color:#201e22;font-size: 20px;text-align : center',name='amount',type='hidden',value=results[i].reqAmount)
+										input(id='reqamount',name='reqamount',type='hidden',value=results[i].reqAmount)
+										input(id='indexing',name='ids',type='hidden',value=results[i].id)
 										button(type='submit',value='submit').btn.button-sign-in.btn-danger
 											span.glyphicon
 												| clear

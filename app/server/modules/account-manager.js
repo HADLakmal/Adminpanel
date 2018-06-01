@@ -3,6 +3,7 @@ var crypto 		= require('crypto');
 var MongoDB 	= require('mongodb').Db;
 var Server 		= require('mongodb').Server;
 var moment 		= require('moment');
+var async = require('async');
 
 
 /*
@@ -69,7 +70,7 @@ exports.manualLogin = function(user, pass, callback)
 
 /* record insertion, update & deletion methods */
 
-exports.addNewAccount = function(newData, callback)
+exports.addNewAccount = async function(newData, callback)
 {
 	accounts.findOne({user:newData.user}, function(e, o) {
 		if (o){
@@ -91,7 +92,7 @@ exports.addNewAccount = function(newData, callback)
 	});
 }
 
-exports.updateAccount = function(newData, callback)
+exports.updateAccount = async function(newData, callback)
 {
 	accounts.findOne({_id:getObjectId(newData.id)}, function(e, o){
 		o.name 		= newData.name;
@@ -114,7 +115,7 @@ exports.updateAccount = function(newData, callback)
 	});
 }
 
-exports.updatePassword = function(email, newPass, callback)
+exports.updatePassword = async function(email, newPass, callback)
 {
 	accounts.findOne({email:email}, function(e, o){
 		if (e){
@@ -130,25 +131,25 @@ exports.updatePassword = function(email, newPass, callback)
 
 /* account lookup methods */
 
-exports.deleteAccount = function(id, callback)
+exports.deleteAccount = async function(id, callback)
 {
 	accounts.remove({_id: getObjectId(id)}, callback);
 }
 
-exports.getAccountByEmail = function(email, callback)
+exports.getAccountByEmail = async function(email, callback)
 {
 	console.log(email);
 	accounts.findOne({email:email}, function(e, o){ callback(o); });
 }
 
-exports.validateResetLink = function(email, passHash, callback)
+exports.validateResetLink = async function(email, passHash, callback)
 {
 	accounts.find({ $and: [{email:email, pass:passHash}] }, function(e, o){
 		callback(o ? 'ok' : null);
 	});
 }
 
-exports.getAllRecords = function(callback)
+exports.getAllRecords =  async function(callback)
 {
 	accounts.find().toArray(
 		function(e, res) {
@@ -157,7 +158,7 @@ exports.getAllRecords = function(callback)
 	});
 }
 
-exports.delAllRecords = function(callback)
+exports.delAllRecords = async function(callback)
 {
 	accounts.remove({}, callback); // reset accounts collection for testing //
 }
@@ -169,7 +170,7 @@ exports.getAccountAmount = function (a,callback) {
 		});
 }
 
-exports.updateAccountAmount = function (a,callback) {
+exports.updateAccountAmount = async function (a,callback) {
 	var myquery = { user: 'admin' };
 	accounts.findOne(myquery,
 		function(e, res) {
@@ -238,7 +239,7 @@ var users = db.collection('users');
 
 
 
-exports.addNewUser = function(newData, callback)
+exports.addNewUser = async function(newData, callback)
 {
     var myquery = {id: newData.id};
     users.findOne(myquery,
@@ -260,7 +261,7 @@ exports.addNewUser = function(newData, callback)
 
 }
 
-exports.userLogin = function(a, callback)
+exports.userLogin = async function(a, callback)
 {
 	var myquery = {id: a.id};
 	users.findOne(myquery,
@@ -274,7 +275,7 @@ exports.userLogin = function(a, callback)
 
 }
 
-exports.findUsers =  function(a,callback)
+exports.findUsers = async  function(a,callback)
 {
 
 	users.find({'withdraw':true}).toArray(
@@ -283,7 +284,7 @@ exports.findUsers =  function(a,callback)
 			else callback(null,results)
 		});
 }
-exports.countUsers =  function(a,callback)
+exports.countUsers = async function(a,callback)
 {
 	users.count(
 		function(e, results) {
@@ -291,7 +292,7 @@ exports.countUsers =  function(a,callback)
 			else callback(null,results)
 		});
 }
-exports.countReqUsers =  function(a,callback)
+exports.countReqUsers = async function(a,callback)
 {
 	users.find({'withdraw':true}).count(
 		function(e, results) {
@@ -300,7 +301,7 @@ exports.countReqUsers =  function(a,callback)
 		});
 }
 
-exports.updateUserAmount = function (a,callback) {
+exports.updateUserAmount = async function (a,callback) {
     console.log(a);
 	if(a.id!=null) {
 		var myquery = {id: a.id,payID : a.payID};
@@ -309,8 +310,8 @@ exports.updateUserAmount = function (a,callback) {
 				if (e||res==null) callback(null,"failed")
 				else {
 
-					var amount = parseFloat(a.amount) + parseFloat(res.amount);
-					var newvalues = {$set: {amount: amount.toFixed(2),payID : Math.random()}};
+					var amount = parseInt(a.amount) + parseInt(res.amount);
+					var newvalues = {$set: {amount: amount,payID : Math.random()}};
 					users.updateOne(myquery, newvalues, function (e, result) {
 						if (e) callback(e)
 						else {
@@ -326,7 +327,7 @@ exports.updateUserAmount = function (a,callback) {
 
 
 
-exports.updateUserAmountID = function (a,callback) {
+exports.updateUserAmountID = async function (a,callback) {
     console.log(a);
     if(a.id!=null) {
         var myquery = {id: a.id};
@@ -348,7 +349,7 @@ exports.updateUserAmountID = function (a,callback) {
 
 }
 
-exports.getUserAmount = function (a,callback) {
+exports.getUserAmount = async  function (a,callback) {
     if(a.id!=null) {
         var myquery = {id: a.id};
         users.findOne(myquery,
@@ -363,7 +364,7 @@ exports.getUserAmount = function (a,callback) {
 
 }
 
-exports.getWithdrawalStatus = function (a,callback) {
+exports.getWithdrawalStatus = async function (a,callback) {
     if(a.id!=null) {
         var myquery = {id: a.id};
         users.findOne(myquery,
@@ -378,14 +379,14 @@ exports.getWithdrawalStatus = function (a,callback) {
 
 }
 
-exports.withdrawrequest = function (a,callback) {
+exports.withdrawrequest = async function (a,callback) {
     if(a.id!=null) {
         var myquery = {id: a.id};
         users.findOne(myquery,
             function (e, res) {
                 if (e) callback(e)
                 else {
-                    var newvalues = {$set: {type: a.type,reqAmount:a.reqAmount,payType : a.payType,withdraw: true,freeze:false,amount:a.amount}};
+                    var newvalues = {$set: {type: a.type,reqAmount:a.reqAmount,payType : a.payType,withdraw: true,freeze:false,amount:a.amount,currency:a.currency}};
                     users.updateOne(myquery, newvalues, function (e, result) {
                         if (e) callback(e)
                         else {
@@ -399,15 +400,15 @@ exports.withdrawrequest = function (a,callback) {
 
 }
 
-exports.updateUserWithdraw = function (a,callback) {
+exports.updateUserWithdraw = async function (a,callback) {
 	console.log(a);
 	if(a.id!=null) {
-		var myquery = {id: a.id,reqAmount:a.amount};
+		var myquery = {id: a.id};
 		users.findOne(myquery,
 			function (e, res) {
 				if (e) callback(e)
 				else {
-					var amount = parseFloat(res.amount).toFixed(2) - parseFloat(a.amount).toFixed(2);
+					var amount = parseInt(res.amount) - parseInt(a.reqamount);
 					if (amount < 0) {
 						callback('request amount is greater than current amount');
 					}
@@ -429,7 +430,7 @@ exports.updateUserWithdraw = function (a,callback) {
 }
 
 
-exports.freezeRequest = function (a,callback) {
+exports.freezeRequest =  async function (a,callback) {
 	console.log(a);
 	if(a.id!=null) {
 		var myquery = {id: a.id,reqAmount:a.amount};
@@ -458,7 +459,7 @@ exports.freezeRequest = function (a,callback) {
 
 
 
-var findByMultipleFields = function(a, callback)
+var findByMultipleFields = async function(a, callback)
 {
 // this takes an array of name/val pairs to search against {fieldName : 'value'} //
 	accounts.find( { $or : a } ).toArray(
