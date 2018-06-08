@@ -50,7 +50,7 @@ function HomeController()
 				$('#paypal').hide();
 				$('#paytm').show();
 			}
-            $('#label').html($(MyRows[row_num-1]).find('td:eq(1)').html());
+            $('#label').html($(MyRows[row_num-1]).find('td:eq(3)').html());
             $('#label_currency').html($(MyRows[row_num-1]).find('td:eq(4)').html());
             $('#label_amount').html($(MyRows[row_num-1]).find('td:eq(5)').html());
 			$('#cancel').html('Cancel');
