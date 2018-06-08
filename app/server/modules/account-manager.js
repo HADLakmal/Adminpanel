@@ -178,7 +178,7 @@ exports.updateAccountAmount =  function (a,callback) {
 			else {
 
 				var amount = parseFloat(a.amount)+parseFloat(res.amount);
-				var newvalues = { $set: {amount: amount} };
+				var newvalues = { $set: {amount: amount,currency:a.currency} };
 				accounts.updateOne(myquery, newvalues, function(e, result) {
 					if (e) callback(e)
 					else {

@@ -43,7 +43,7 @@ function HomeController()
 		var MyRows = $('table#myTable').find('tbody').find('tr');
 		var value = $(MyRows[row_num-1]).find('td:eq(2)').html()
 		if(column_num==9){
-			if($(MyRows[row_num-1]).find('td:eq(6)').html()=="paypal"){
+			if($(MyRows[row_num-1]).find('td:eq(7)').html()=="paypal"){
 				$('#paypal').show();
 				$('#paytm').hide();
 			}else {

@@ -12,9 +12,9 @@ var paytm_checksum = require('./paytm/checksum');
 
 
 paypal.configure({
-	'mode': 'sandbox', //sandbox or live
-	'client_id': 'AYJDBOV9F6ADQkpjLdFUiS-N5HTq3aCph0fi3NMLnwIWX-FS6iVrQy0nbqCpN5twvtUErsXUCg1tvhj6',
-	'client_secret': 'ECd23shcO03CfTo9ztSBtMvgZkd3VmYsNreUK9GTFeC49JAUKbf98Ajnb3mLbZy-JvwlbWC4c2VclNrt'
+	'mode': 'live', //sandbox or live
+	'client_id': 'Abn-DMmFNOuriuYBhLyGpvcn5ZLiPtIU9xQc1EXpzbwxcJ_csF9shnivyFV69F14bZDfAu2I4WgEgJb1',
+	'client_secret': 'EDfXBHnKi-5neFRX9f1F0GBFq37lZPEG4opXwatN3v-5lcXmHip-UEH6AhyLuUzBzo3RLA4XYNrp_se5'
 });
 
 const paytm = new Paytm('<merchantkey>', {
@@ -62,12 +62,15 @@ module.exports = function(app) {
 	app.get('/payment', function (req, res) {
 		var payID = req.query.paymentId;
 		var id = req.query.id;
+		var currency = req.query.currency;
 		paypal.payment.get(payID, function (error, payment) {
 			if (error) {
 				res.status(400).send(error);
 			} else {
+				console.log(payment);
 				AM.updateAccountAmount({
-					amount : payment["transactions"][0].amount.total
+					amount : payment["transactions"][0].amount.total,
+					currency : currency
 				}, function(e,response){
 					if (e){
 						res.status(400).send(e);
@@ -142,6 +145,7 @@ module.exports = function(app) {
 												count : count,
 												reqCount : reqCount,
 												amount : amount
+												//amountInr : amountInr
 											});
 										}
 									});
@@ -469,7 +473,7 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://206.189.28.12:3000/payment?id="+req.body['id'],
+				"return_url": "http://206.189.28.12:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"],
 				"cancel_url": "http://206.189.28.12:3000/Un"
 			},
 			"transactions": [{
