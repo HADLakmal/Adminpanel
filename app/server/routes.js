@@ -12,9 +12,9 @@ var paytm_checksum = require('./paytm/checksum');
 
 
 paypal.configure({
-	'mode': 'sandbox', //sandbox or live
-	'client_id': 'Ab0tXRFTHUXG6C2Wo4MqZONN7pgsMphfqs1fTiRP5bTKKrshN_yWyLIQlYLmhFFnW1XDL8SvDUz18fIu',
-	'client_secret': 'EGLDe9-UhkodcbnjwwElTMCqQ9ZlfZ8Vu-ixIGdNSAW_24PF7tso_DrhFYNKai9uMSNR2U5xPhI7HhHS'
+	'mode': 'live', //sandbox or live
+	'client_id': 'AdAeMvTLvvUn6Fy5_9DmUVfuSWFDtWxPSA73fgjgV195Qj1khRqj-F985ipAyqw8z9anC_KUpi1j31mZ',
+	'client_secret': 'EFDhNNto5qZxpcvb9_6GNFT0QFCxWY-c4GtWwNgaHKyVAdLqzbOfEGYHYJj1V07VJ-QxODcekRge5rdX'
 });
 
 const paytm = new Paytm('<merchantkey>', {
