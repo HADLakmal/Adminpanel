@@ -12,7 +12,7 @@ var paytm_checksum = require('./paytm/checksum');
 
 
 paypal.configure({
-	'mode': 'live', //sandbox or live
+	'mode': 'sandbox', //sandbox or live
 	'client_id': 'Ab0tXRFTHUXG6C2Wo4MqZONN7pgsMphfqs1fTiRP5bTKKrshN_yWyLIQlYLmhFFnW1XDL8SvDUz18fIu',
 	'client_secret': 'EGLDe9-UhkodcbnjwwElTMCqQ9ZlfZ8Vu-ixIGdNSAW_24PF7tso_DrhFYNKai9uMSNR2U5xPhI7HhHS'
 });
