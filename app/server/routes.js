@@ -497,8 +497,8 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://206.189.28.12:3000:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"],
-				"cancel_url": "http://206.189.28.12:3000:3000/Un"
+				"return_url": "http://206.189.28.12:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"],
+				"cancel_url": "http://206.189.28.12:3000/Un"
 			},
 			"transactions": [{
 				"item_list": {
