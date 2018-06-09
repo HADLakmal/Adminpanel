@@ -63,11 +63,35 @@ module.exports = function(app) {
 		var payID = req.query.paymentId;
 		var id = req.query.id;
 		var currency = req.query.currency;
+
 		paypal.payment.get(payID, function (error, payment) {
 			if (error) {
 				res.status(400).send(error);
 			} else {
 				console.log(payment);
+				var execute_payment_json = {
+					"payer_id": req.query.PayerID,
+					"transactions": [{
+						"amount": {
+							"currency": req.query.currency,
+							"total": payment["transactions"][0].amount.total
+						}
+					}]
+				};
+
+				var paymentId = req.query.paymentId;
+
+				paypal.payment.execute(paymentId, execute_payment_json, function (error, paymentexe) {
+					if (error) {
+						console.log(error.response);
+						throw error;
+					} else {
+						console.log("Get Payment Response");
+						console.log(JSON.stringify(paymentexe));
+					}
+				});
+
+
 				AM.updateAccountAmount({
 					amount : payment["transactions"][0].amount.total,
 					currency : currency
@@ -473,8 +497,8 @@ module.exports = function(app) {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://206.189.28.12:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"],
-				"cancel_url": "http://206.189.28.12:3000/Un"
+				"return_url": "http://206.189.28.12:3000:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"],
+				"cancel_url": "http://206.189.28.12:3000:3000/Un"
 			},
 			"transactions": [{
 				"item_list": {
