@@ -564,8 +564,8 @@ module.exports = function(app) {
 			phone: "9620681643",
 			lastname: "Manjunathshetty",
 			firstname: "Manjunathshetty",
-			surl: "http://localhost:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"]+"&paymentId="+pay, //"http://localhost:3000/payu/success"
-			furl: "http://localhost:3000/Un", //"http://localhost:3000/payu/fail"
+			surl: "http://206.189.28.12:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"]+"&paymentId="+pay, //"http://localhost:3000/payu/success"
+			furl: "http://206.189.28.12:3000/Un", //"http://localhost:3000/payu/fail"
 		};
 		payumoney.makePayment(paymentData, function(error, response) {
 			if (error) {
