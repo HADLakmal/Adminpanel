@@ -10,6 +10,12 @@ var  Paytm = require('paytm-sdk');
 var paytm_config = require('./paytm/paytm_config').paytm_config;
 var paytm_checksum = require('./paytm/checksum');
 
+var payumoney = require('payumoney-node');
+payumoney.setKeys("mmM4EsQC", "vS3fnncCMv", "wDYy0KxAMaRNloQzoPUBl60KkxOJtGfsVXKLicfAo3c=");
+payumoney.isProdMode(true);
+
+
+
 
 paypal.configure({
 	'mode': 'live', //sandbox or live
@@ -341,7 +347,7 @@ module.exports = function(app) {
 		});
 	});
 	
-	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
+
 
 
 
@@ -488,6 +494,7 @@ module.exports = function(app) {
         });
     });
 
+	/*
 	//Paypal
 	app.post('/paypal',function (req,res) {
 
@@ -544,8 +551,68 @@ module.exports = function(app) {
 		});
 	});
 
+	*/
 
 
+	app.post('/paypal',function (req,res) {
+		var pay = Math.random();
+		var paymentData = {
+			productinfo: "Product 1",
+			txnid: "asc123",
+			amount: "10",
+			email: "manjunathshettymj@gmail.com",
+			phone: "9620681643",
+			lastname: "Manjunathshetty",
+			firstname: "Manjunathshetty",
+			surl: "http://localhost:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"]+"&paymentId="+pay, //"http://localhost:3000/payu/success"
+			furl: "http://localhost:3000/Un", //"http://localhost:3000/payu/fail"
+		};
+		payumoney.makePayment(paymentData, function(error, response) {
+			if (error) {
+				// Some error
+			} else {
+				// Payment redirection link
+
+				AM.updateUserAmountID({
+					id : req.body['id'],
+					payID : pay
+				}, function(e){
+					if (e){
+						res.status(400).send(e);
+					}	else{
+						res.status(200).send(response.dict.location);
+					}
+				});
+			}
+		});
+		/*
+		paypal.payment.create(create_payment_json, function (error, payment) {
+			if (error) {
+				console.log(error);
+				res.status(400).send('fail');
+
+			} else {
+				AM.updateUserAmountID({
+					id : req.body['id'],
+					payID : payment["id"]
+				}, function(e){
+					if (e){
+						res.status(400).send(e);
+					}	else{
+						console.log(payment["id"]);
+						for(var i = 0;i < payment.links.length;i++){
+							if(payment.links[i].rel === 'approval_url'){
+								//res.redirect(payment.links[i].href);
+								res.status(200).send(payment.links[i].href);
+							}
+						}
+					}
+				});
+
+			}
+		});
+		*/
+	});
 
 	app.post('/generate',function (request,response) {
 		console.log("dsadas");
@@ -613,7 +680,7 @@ module.exports = function(app) {
 
 
 
-
+	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
 };
 

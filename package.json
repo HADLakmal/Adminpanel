@@ -11,6 +11,7 @@
     "url": "https://github.com/HADLakmal/Adminpanel"
   },
   "dependencies": {
+    "async": "^2.5.0",
     "body-parser": "1.14.1",
     "connect-mongo": "0.8.2",
     "cookie-parser": "1.4.0",
@@ -26,7 +27,7 @@
     "paypal-pay": "^0.1.1",
     "paypal-rest-sdk": "^1.8.1",
     "paytm-sdk": "0.0.2",
-    "async": "^2.5.0",
+    "payumoney-node": "^1.1.9",
     "stylus": "0.52.4"
   },
   "engines": {

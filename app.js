@@ -12,6 +12,7 @@ var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
+var fs = require('fs');
 
 
 var app = express();
@@ -49,6 +50,12 @@ app.use(session({
 );
 
 require('./app/server/routes')(app);
+
+
+var options = {
+	key: fs.readFileSync('privateKey.key'),
+	cert: fs.readFileSync('certificate.crt')
+};
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
