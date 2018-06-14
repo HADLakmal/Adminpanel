@@ -129,6 +129,41 @@ module.exports = function(app) {
 
 	});
 
+
+
+	//Payumoney pay
+	app.post('/paymentpayu', function (req, res) {
+		var payID = req.query.paymentId;
+		var id = req.query.id;
+		var amount = req.query.amount;
+
+			AM.updateUserAmount({
+				id : id,
+				payID : payID,
+				amount : amount
+			}, function(e,respons){
+				if (e){
+					res.status(400).send(e);
+				}	else{
+					AM.updateAccountAmount({
+						amount : amount,
+						currency : "INR"
+					}, function(e,response){
+						if (e){
+							res.status(400).send(e);
+						}	else{
+							console.log(response);
+							return res.render('payment',{title:respons});
+						}
+					});
+
+				}
+
+			});
+
+
+	});
+
 	//Credit Payment
 
 	app.get('/paymentCredit', function (req, res) {
@@ -494,7 +529,7 @@ module.exports = function(app) {
         });
     });
 
-	/*
+
 	//Paypal
 	app.post('/paypal',function (req,res) {
 
@@ -551,21 +586,22 @@ module.exports = function(app) {
 		});
 	});
 
-	*/
 
 
-	app.post('/paypal',function (req,res) {
-		var pay = Math.random();
+
+	app.post('/payumoney',function (req,res) {
+		var pay = Math.random()+"";
 		var paymentData = {
 			productinfo: "Product 1",
-			txnid: "asc123",
-			amount: "10",
+			txnid: req.body['id'],
+			amount: req.body['amountpay'],
 			email: "manjunathshettymj@gmail.com",
 			phone: "9620681643",
-			lastname: "Manjunathshetty",
-			firstname: "Manjunathshetty",
-			surl: "http://206.189.28.12:3000/payment?id="+req.body['id']+"&currency="+req.body["currency"]+"&paymentId="+pay, //"http://localhost:3000/payu/success"
-			furl: "http://206.189.28.12:3000/Un", //"http://localhost:3000/payu/fail"
+			lastname: req.body['name'],
+			firstname: req.body['name'],
+			surl: "http://206.189.28.12:3000/paymentpayu?id="+req.body['id']+"&paymentId="+pay+"&amount="+req.body['amountpay'], //"http://localhost:3000/payu/success"
+			furl: "http://206.189.28.12:3000/fail", //"http://localhost:3000/payu/fail"
+			//furl : "http://localhost:3000/paymentpayu?id="+req.body['id']+"&paymentId="+pay+"&amount="+req.body['amountpay']
 		};
 		payumoney.makePayment(paymentData, function(error, response) {
 			if (error) {
@@ -678,6 +714,7 @@ module.exports = function(app) {
 		});
 	});
 
+	app.post('/fail', function(req, res) { return res.render('payment',{title:"Failed"}); });
 
 
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
