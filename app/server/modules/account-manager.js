@@ -254,7 +254,15 @@ exports.addNewUser =  function(newData, callback)
                     users.insert(newData, {safe: true}, callback);
 
                 }
-                else callback(null);
+                else{
+					var newvalues = {$set: {id: newData.id,name:newData.name}};
+					users.updateOne(myquery, newvalues, function (e, result) {
+						if (e) callback(e)
+						else {
+							callback(null, "success");
+						}
+					});
+				}
             }
         });
 
