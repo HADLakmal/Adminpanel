@@ -255,7 +255,7 @@ exports.addNewUser =  function(newData, callback)
 
                 }
                 else{
-					var newvalues = {$set: {id: newData.id,name:newData.name}};
+					var newvalues = {$set: {id: newData.id,name:newData.name,withdraw : false,freeze : false}};
 					users.updateOne(myquery, newvalues, function (e, result) {
 						if (e) callback(e)
 						else {
